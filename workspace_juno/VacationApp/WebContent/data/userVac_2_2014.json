@@ -1,0 +1,12 @@
+{"yearNumber": "2014", 
+"userId": "1", 
+"vacationDays": [
+					{"dateStr": "2014-02-06", "status":1},	
+					{"dateStr": "2014-05-07", "status":1},
+					{"dateStr": "2014-06-08", "status":1},
+					{"dateStr": "2014-12-29", "status":1},	
+					{"dateStr": "2014-10-20", "status":1},
+					{"dateStr": "2014-09-21", "status":1}
+					
+				]
+}
