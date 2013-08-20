@@ -2,8 +2,6 @@ package com.gtech.webservices;
 import java.util.Calendar;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import java.util.Date;
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;

@@ -1,6 +1,5 @@
 package com.gtech.webservices;
 
-import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 
@@ -242,10 +241,10 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
     	VacationSummary vacationSum= (VacationSummary)sf.getCurrentSession().createQuery("FROM " + VacationSummary.class.getName() + " WHERE name = :user").setString("user", user).uniqueResult();
     	return vacationSum;
     }
-    
+   /* 
     private EscalationList getEscalationList(String user)
     {
     	EscalationList escList= (EscalationList)sf.getCurrentSession().createQuery("FROM " + EscalationList.class.getName() + " WHERE name = :user").setString("user", user).uniqueResult();
     	return escList;
-    }
+    }*/
 }

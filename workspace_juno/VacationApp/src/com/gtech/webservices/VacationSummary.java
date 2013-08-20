@@ -6,8 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 
