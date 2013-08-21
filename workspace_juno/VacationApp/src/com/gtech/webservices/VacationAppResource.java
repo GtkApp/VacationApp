@@ -1,6 +1,10 @@
 package com.gtech.webservices;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //import javax.xml.bind.DatatypeConverter;
 import javax.annotation.Resource;
@@ -19,6 +23,8 @@ import javax.ws.rs.Produces;
 //import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.spi.NotFoundException;
+
 
 public class VacationAppResource implements VacationAppInterface{
 	 @Resource(mappedName = "java:jboss/mail/VacApp_GMAIL")
@@ -30,12 +36,27 @@ public class VacationAppResource implements VacationAppInterface{
 	@Path("/VacationList/{vacationSince}/{vacationUntil}")
 	@Produces({ "application/json", "application/xml" })
 	public VacationList getVacationList(String auth, String vacationSince, String vacationUntil) {		
+		DateFormat formatter ; 
+		
+		formatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date dateVacationSince, dateVacationUntil;
+			dateVacationSince = formatter.parse(vacationSince);
+			dateVacationUntil = formatter.parse(vacationUntil);
+			
+			if( dateVacationSince.compareTo(dateVacationUntil) > 0 )
+				throw new NotFoundException("It is not possible to add vacation. Date \"Since\" is after date \"Until\".");
+		
+		} catch (ParseException e) {
+			throw new NotFoundException("It is not possible to add vacation. Invalid date format.");
+		}
+		
 		
 		//vacationDAO.save(vacationDAO.fakeVacation());
 		VacationList vacationList = new VacationList();
 		//vacationDAO.fakeVacation();
 		vacationList.setVacations(vacationDAO.getVacationList(getUserFromAuth(auth), vacationSince, vacationUntil));
-				
+		
 /*************************
         //
         // Creates email message
