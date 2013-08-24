@@ -1,10 +1,5 @@
 package com.gtech.webservices;
 
-import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 //import javax.xml.bind.DatatypeConverter;
 import javax.annotation.Resource;
@@ -23,67 +18,27 @@ import javax.ws.rs.Produces;
 //import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.jboss.resteasy.spi.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class VacationAppResource implements VacationAppInterface{
 	 @Resource(mappedName = "java:jboss/mail/VacApp_GMAIL")
 	 javax.mail.Session mailSession;
 	 
-	private VacationDao vacationDAO;
+	/*@Autowired
+	private VacationDao vacationDAO;*/
+	
+	@Autowired
+	private VacationManager vacationManager;
+	
 	@Override
 	@GET
 	@Path("/VacationList/{vacationSince}/{vacationUntil}")
 	@Produces({ "application/json", "application/xml" })
-	public VacationList getVacationList(String auth, String vacationSince, String vacationUntil) {		
-		DateFormat formatter ; 
-		
-		formatter = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			Date dateVacationSince, dateVacationUntil;
-			dateVacationSince = formatter.parse(vacationSince);
-			dateVacationUntil = formatter.parse(vacationUntil);
-			
-			if( dateVacationSince.compareTo(dateVacationUntil) > 0 )
-				throw new NotFoundException("It is not possible to add vacation. Date \"Since\" is after date \"Until\".");
-		
-		} catch (ParseException e) {
-			throw new NotFoundException("It is not possible to add vacation. Invalid date format.");
-		}
-		
-		
-		//vacationDAO.save(vacationDAO.fakeVacation());
+	public VacationList getVacationList(String codedAuth, String vacationSince, String vacationUntil) {		
+					
 		VacationList vacationList = new VacationList();
-		//vacationDAO.fakeVacation();
-		vacationList.setVacations(vacationDAO.getVacationList(getUserFromAuth(auth), vacationSince, vacationUntil));
-		
-/*************************
-        //
-        // Creates email message
-        //
-		   String to = "grzegorzbielanski@gmail.com";
-		   String from = "vacationapp@gmail.com";
-		   String subject = "Testing...";
-		   Message msg = new MimeMessage(mailSession);
-		    try {
-		      msg.setFrom(new InternetAddress(from));
-		      msg.setRecipient(Message.RecipientType.TO , new InternetAddress(to));
-		      msg.setSubject(subject);
-		      msg.setText("Working fine..!");
-		    }  catch(Exception exc) {
-		       }
-
-        //
-        // Send a message
-        //
-        try {
-			Transport.send(msg);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		
-***************************/		
+		vacationList.setVacations(vacationManager.manageGetVacationList(codedAuth, vacationSince, vacationUntil));
 		
 		return vacationList;
 	}
@@ -93,10 +48,8 @@ public class VacationAppResource implements VacationAppInterface{
 	@Produces({ "application/json", "application/xml" })
 	public VacationSummary getVacationSummary(String auth) {
         
-        //vacationDAO.saveSummary(vacationDAO.fakeVacationSummary());
-		//return vacationDAO.fakeVacationSummary();
-        
-        return vacationDAO.getVacationSummary(getUserFromAuth(auth));
+        return vacationManager.manageGetVacationSummary(auth);
+
 	}
 
 	@Override
@@ -104,10 +57,11 @@ public class VacationAppResource implements VacationAppInterface{
 	@Path("/NewVacation")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Vacation addVacation(String auth, Vacation vacation) {
+	public Vacation addVacation(String codedAuth, Vacation vacation) {
 		// TODO Auto-generated method stub
 		//EscalationList escalation = 
-	    vacationDAO.addVacationRequest(vacation, getUserFromAuth(auth));
+	    //vacationDAO.addVacationRequest(vacation, auth/*getUserFromAuth(auth)*/);
+	    vacationManager.manageNewVacationRequest(vacation, codedAuth);
 		//TODO ESCALATE!!!
 		//vacationDAO.save(vacation);
 		return vacation;
@@ -119,36 +73,19 @@ public class VacationAppResource implements VacationAppInterface{
 	@Path("/ExistingVacation")
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Vacation updateVacation(String auth, Vacation vacation) {
+	public Vacation updateVacation(String codedAuth, Vacation vacation) {
 		
-		Vacation vUpdated = vacationDAO.updateVacationRequest(vacation, getUserFromAuth(auth));
+		//Vacation vUpdated = vacationDAO.updateVacationRequest(vacation, auth/*getUserFromAuth(auth)*/);
+		Vacation vUpdated = vacationManager.updateExistingVacation(vacation, codedAuth);
 		return vUpdated;
 	}
-	
+	/*
 	public VacationDao getVacationDao() {
 		return vacationDAO;
 	}
 
 	public void setVacationDao(VacationDao vacationDao) {
 		this.vacationDAO = vacationDao;
-		}
+		}*/
 	
-	private String getUserFromAuth(String auth)
-	{
-		String userAndPassword64 = auth.replace("Basic ", "");
-		
-		byte[] encodedDataAsBytes =  javax.xml.bind.DatatypeConverter.parseBase64Binary(userAndPassword64);
-		String val ="";
-		try {
-			val = new String(encodedDataAsBytes, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-        String user = val.substring(0, val.indexOf(':'));
-        /*String pass = val.substring(val.indexOf(':') + 1);*/	
-		
-        return user;
-	}
 }

@@ -4,12 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Import necessary DAO and DB transaction management classes -->
-    <import resource="classpath:dao-config.xml"/>
+    <import resource="classpath:manager-config.xml"/>
 
-    <!-- Inject DAO classes in service -->
+    <!-- Inject DAO classes in service 
     <bean id="vacationService"
           class="com.gtech.webservices.VacationAppResource"
-          p:vacationDao-ref="vacationDao"/>
+          p:vacationDao-ref="vacationDao"/> -->
 
-
+    <bean id="vacationService"
+          class="com.gtech.webservices.VacationAppResource"/>
 </beans>
