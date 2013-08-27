@@ -11,4 +11,5 @@
 	<import resource="classpath:persistence-config.xml"/>
 	<bean id="vacationDao" class="com.gtech.webservices.VacationDaoImpl"/>
 	<bean id="vacationSummaryDao" class="com.gtech.webservices.VacationSummaryDaoImpl"/>
+	<bean id="vacationAppUserDao" class="com.gtech.webservices.VAppUserDaoImpl"/>
 </beans>

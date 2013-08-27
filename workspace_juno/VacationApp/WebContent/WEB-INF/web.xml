@@ -15,7 +15,7 @@
   </listener>    
   <servlet-mapping>
     <servlet-name>Resteasy</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/Deeper/*</url-pattern>
   </servlet-mapping>
   <context-param>
     <param-name>javax.ws.rs.Application</param-name>
