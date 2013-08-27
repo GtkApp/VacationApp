@@ -1,14 +1,13 @@
 package com.gtech.webservices;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 
-@Transactional
 public class VacationDaoImpl implements VacationDao{
 	
 	@Autowired
@@ -24,19 +23,14 @@ public class VacationDaoImpl implements VacationDao{
 	public void save(Vacation vacation) {	
 		sf.getCurrentSession().save(vacation);
 	}
-
-	public void saveSummary(VacationSummary vacation) {	
-		sf.getCurrentSession().save(vacation);
-	}
-	
 	
 	public Vacation update(Vacation vacation) {
 		
-		Vacation vacationForUpd= (Vacation)sf.getCurrentSession().get(Vacation.class, vacation.getId());
+		Vacation vacationForUpd= (Vacation)sf.getCurrentSession().get(Vacation.class, vacation.getIdn());
 		
 		vacationForUpd.setNumberOfDays(vacation.getNumberOfDays());
 		vacationForUpd.setTypeOfVacation(vacation.getTypeOfVacation());
-		vacationForUpd.setStausOfVacationRequest(vacation.getStausOfVacationRequest());
+		vacationForUpd.setStatusOfVacationRequest(vacation.getStatusOfVacationRequest());
 		
 		/* I am not sure if required*/
 		vacationForUpd.setUserName(vacation.getUserName());
@@ -60,21 +54,21 @@ public class VacationDaoImpl implements VacationDao{
 	public Vacation fakeVacation(){
         Vacation vacation = new Vacation();
         
-        vacation.setId(1);
+        vacation.setIdn(1);
         vacation.setUserName("gbielanski");
         
         Calendar cal1 = Calendar.getInstance();
         cal1.clear();
-        cal1.set(2013,4, 6);
+        cal1.set(2013,7, 3);
         
         Calendar cal2 = Calendar.getInstance();
         cal2.clear();
-        cal2.set(2013,5, 6);
+        cal2.set(2013,8, 3);
         vacation.setVacationSince(cal1);
         vacation.setVacationUntil(cal2);
         vacation.setNumberOfDays(20);
         vacation.setTypeOfVacation(VacationType.VACATION);
-        vacation.setStausOfVacationRequest(VacationStatus.WAITING_FOR_ACCEPTATION);
+        vacation.setStatusOfVacationRequest(VacationStatus.WAITING_FOR_ACCEPTATION);
         vacation.setNumberOfOutstandingDaysUsed(2);
 
         return vacation;
@@ -103,12 +97,12 @@ public class VacationDaoImpl implements VacationDao{
     
     public List<Vacation> getVacationList(String user, String vSince, String vUntil)
     {
-    	List<Vacation> vacations = sf.getCurrentSession().createQuery("FROM " + Vacation.class.getName() + 
+    	List<Vacation> vacationList = sf.getCurrentSession().createQuery("FROM " + Vacation.class.getName() + 
     			" WHERE username = :user AND vacationsince > \'" + vSince + "\' AND vacationsince < \'" + vUntil +"\'")
     			.setString("user", user)
     			.list();
     	
-    	return vacations;
+    	return vacationList;
     	
     }
     
@@ -116,6 +110,23 @@ public class VacationDaoImpl implements VacationDao{
     {
     	VacationSummary vacationSum= (VacationSummary)sf.getCurrentSession().createQuery("FROM " + VacationSummary.class.getName() + " WHERE name = :user").setString("user", user).uniqueResult();
     	return vacationSum;
+    }
+    
+    public  List<Vacation>  isUserAvailable(String username)
+    {
+    	Calendar calendardate = Calendar.getInstance();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	
+    	String strdate = sdf.format(calendardate.getTime());
+    	
+    	System.out.println(String.format("[OKO8] %s", strdate));
+    	
+    	List<Vacation> vacationList = sf.getCurrentSession().createQuery("FROM " + Vacation.class.getName() + 
+    			" WHERE username = :user AND vacationsince < \'" + strdate + "\' AND vacationuntil > \'" + strdate +"\'")
+    			.setString("user", username)
+    			.list(); 
+    	
+    	return vacationList;
     }
    /* 
     private EscalationList getEscalationList(String user)

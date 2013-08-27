@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 
 @Entity
-@Table(name="VACATIONS_SUMMARY")
+@Table(name="VACATION_SUMMARY")
 @XmlRootElement
 public class VacationSummary 
 {

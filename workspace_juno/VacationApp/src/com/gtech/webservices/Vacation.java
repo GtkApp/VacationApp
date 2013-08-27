@@ -13,12 +13,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 
 @Entity
-@Table(name="VACATIONS")
+@Table(name="VACATION_LIST")
 @XmlRootElement
 public class Vacation{
 	@Id
 	@GeneratedValue	
-	private int id;
+	private int idn;
 	
 	@NotNull
 	private String userName;
@@ -27,7 +27,7 @@ public class Vacation{
 	@Min(1)
 	private int numberOfDays;
 	private VacationType typeOfVacation;
-	private VacationStatus stausOfVacationRequest;
+	private VacationStatus statusOfVacationRequest;
 	@Min(0)
 	private int numberOfOutstandingDaysUsed;
 
@@ -39,12 +39,12 @@ public class Vacation{
 		this.numberOfOutstandingDaysUsed = numberOfOutstandingDaysUsed;
 	}
 
-	public VacationStatus getStausOfVacationRequest() {
-		return stausOfVacationRequest;
+	public VacationStatus getStatusOfVacationRequest() {
+		return statusOfVacationRequest;
 	}
 
-	public void setStausOfVacationRequest(VacationStatus stausOfVacationRequest) {
-		this.stausOfVacationRequest = stausOfVacationRequest;
+	public void setStatusOfVacationRequest(VacationStatus stausOfVacationRequest) {
+		this.statusOfVacationRequest = stausOfVacationRequest;
 	}
 
 	public int getNumberOfDays() {
@@ -63,12 +63,12 @@ public class Vacation{
 		this.typeOfVacation = typeOfVacation;
 	}
 
-	public int getId() {
-		return id;
+	public int getIdn() {
+		return idn;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdn(int idn) {
+		this.idn = idn;
 	}
 
 	  public String getUserName() {

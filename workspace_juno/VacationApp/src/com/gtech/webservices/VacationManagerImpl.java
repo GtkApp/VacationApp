@@ -3,7 +3,9 @@ package com.gtech.webservices;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.text.ParseException;
 
@@ -18,6 +20,9 @@ public class VacationManagerImpl implements VacationManager {
 	@Autowired
 	private VacationSummaryDao vacationSummaryDao;
 	
+	@Autowired
+	private VAppUserDao vacationAppUserDao;
+	
 	public VacationManagerImpl()
 	{
 		
@@ -25,8 +30,8 @@ public class VacationManagerImpl implements VacationManager {
 
 	private Boolean updateVacationSummaryAfterVacationUpdate(Vacation newVacation)
 	{
-		if(newVacation.getStausOfVacationRequest() == VacationStatus.CANCELLED || 
-				newVacation.getStausOfVacationRequest() == VacationStatus.REJECTED)
+		if(newVacation.getStatusOfVacationRequest() == VacationStatus.CANCELLED || 
+				newVacation.getStatusOfVacationRequest() == VacationStatus.REJECTED)
 			return true;
 		
 		return false;
@@ -34,8 +39,8 @@ public class VacationManagerImpl implements VacationManager {
 	
 	private Boolean isUpdatePossible(Vacation currentVacationRequest, Vacation newVacationRequest)
 	{
-		VacationStatus currentVacationStatus = currentVacationRequest.getStausOfVacationRequest();
-		VacationStatus newVacationStatus = newVacationRequest.getStausOfVacationRequest();
+		VacationStatus currentVacationStatus = currentVacationRequest.getStatusOfVacationRequest();
+		VacationStatus newVacationStatus = newVacationRequest.getStatusOfVacationRequest();
 		
 		if(currentVacationStatus == VacationStatus.CANCELLED || currentVacationStatus == VacationStatus.REJECTED)
 			return false;
@@ -87,7 +92,7 @@ public class VacationManagerImpl implements VacationManager {
 	
     public VacationSummary manageGetVacationSummary(String codedAuth)
     {
-        //vacationDAO.saveSummary(vacationDAO.fakeVacationSummary());
+        //vacationSummaryDao.saveSummary(vacationSummaryDao.fakeVacationSummary());
 		//return vacationDAO.fakeVacationSummary();
     	System.out.println(String.format("manageGetVacationSummary"));
     	return vacationSummaryDao.getVacationSummary(getUserFromAuth(codedAuth));
@@ -95,7 +100,7 @@ public class VacationManagerImpl implements VacationManager {
     
     public List<Vacation> manageGetVacationList(String codedAuth, String vSince, String vUntil)
     {
-    	//vacationDAO.save(vacationDAO.fakeVacation());
+    	//vacationDao.save(vacationDao.fakeVacation());
 		DateFormat formatter ; 
 		
 		formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -114,6 +119,42 @@ public class VacationManagerImpl implements VacationManager {
 		System.out.println(String.format("manageGetVacationList"));
 		return vacationDao.getVacationList(getUserFromAuth(codedAuth), vSince, vUntil);
     }
+       
+    public VacationSummary manageGetVacationSummary(String codedAuth, int userIdn)
+    {
+    	VAppUser user = vacationAppUserDao.get(userIdn);
+        //vacationDAO.saveSummary(vacationDAO.fakeVacationSummary());
+		//return vacationDAO.fakeVacationSummary();
+    	System.out.println(String.format("manageGetVacationSummary"));
+    	return vacationSummaryDao.getVacationSummary(user.getUserName());
+    }
+    
+    public List<Vacation> manageGetVacationList(String codedAuth, String vSince, String vUntil, int userIdn)
+    {
+    	//vacationDAO.save(vacationDAO.fakeVacation());
+		DateFormat formatter ; 
+		
+		formatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date dateVacationSince, dateVacationUntil;
+			dateVacationSince = formatter.parse(vSince);
+			dateVacationUntil = formatter.parse(vUntil);
+			
+			if( dateVacationSince.compareTo(dateVacationUntil) > 0 )
+				throw new NotFoundException("It is not possible to add vacation. Date \"Since\" is after date \"Until\".");
+		
+		} catch (ParseException e) {
+			throw new NotFoundException("It is not possible to add vacation. Invalid date format.");
+		}
+		
+		VAppUser user = vacationAppUserDao.get(userIdn);
+		
+		if(user == null )
+			throw new NotFoundException("User id does not exist.");
+		
+		System.out.println(String.format("manageGetVacationList"));
+		return vacationDao.getVacationList(user.getUserName(), vSince, vUntil);
+    }    
     
 	public Vacation manageNewVacationRequest(Vacation vacationRequest, String codedAuth)
 	{
@@ -140,7 +181,7 @@ public class VacationManagerImpl implements VacationManager {
 	{
 		VacationSummary vacationSum = vacationSummaryDao.getVacationSummary(getUserFromAuth(codedAuth));
 		
-		Vacation currentVacationRequest = vacationDao.get(vacationRequest.getId());
+		Vacation currentVacationRequest = vacationDao.get(vacationRequest.getIdn());
 		
 		if(isUpdatePossible(currentVacationRequest, vacationRequest) == false)
 			throw new NotFoundException("It is not possible to update vacation");
@@ -155,4 +196,54 @@ public class VacationManagerImpl implements VacationManager {
 				
 		return vacationUpdated;
 	}
+	
+	public  List<VAppUser> manageGetUserList(String codedAuth)
+	{
+		String supervisorName = getUserFromAuth(codedAuth);
+		
+		VAppUser user = vacationAppUserDao.getByName(supervisorName);
+		
+		if(user == null)
+			throw new NotFoundException("User not found: " + supervisorName);
+		
+		int supervisorId = user.getUserIdn();
+		
+		return vacationAppUserDao.getDependentUserList(supervisorId);
+	} 	
+	
+	public  List<UserStat> manageGetUserStatusList(String codedAuth)
+	{
+		 List<UserStat> userStatList =  new ArrayList<UserStat>();
+		 
+		String supervisorName = getUserFromAuth(codedAuth);
+		VAppUser user = vacationAppUserDao.getByName(supervisorName);
+		if(user == null)
+			throw new NotFoundException("User not found: " + supervisorName);
+		
+		int supervisorId = user.getUserIdn();
+		
+		List<VAppUser> allUserList = vacationAppUserDao.getDependentUserList(supervisorId);
+		
+		Iterator<VAppUser> userIterator = allUserList.iterator();
+		
+		while(userIterator.hasNext())
+		{
+			VAppUser element = userIterator.next();
+			
+			List<Vacation> vacationList = vacationDao.isUserAvailable(element.getUserName());
+			
+			if(vacationList.isEmpty())
+				userStatList.add(new UserStat(true, element.getUserName()));
+			else
+			{
+				Iterator<Vacation> vacationIterator = vacationList.iterator();
+				
+				userStatList.add(new UserStat(false, element.getUserName(), vacationIterator.next().getVacationUntil()));;
+			}	
+		}
+		return userStatList;
+		
+
+	}	
+	
 }

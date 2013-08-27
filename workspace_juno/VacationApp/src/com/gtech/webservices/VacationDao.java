@@ -16,5 +16,7 @@ public interface VacationDao {
 	public abstract Vacation fakeVacation();
 
 	public abstract VacationSummary fakeVacationSummary();
+	
+	public abstract List<Vacation> isUserAvailable(String username);
 
 }

@@ -14,7 +14,7 @@ public class VacationSummaryDaoImpl implements VacationSummaryDao{
 	}
 	@Override
 	public void saveSummary(VacationSummary vacation) {
-		// TODO Auto-generated method stub
+		sf.getCurrentSession().save(vacation);
 		
 	}
 
@@ -28,8 +28,20 @@ public class VacationSummaryDaoImpl implements VacationSummaryDao{
 
 	@Override
 	public VacationSummary fakeVacationSummary() {
-		// TODO Auto-generated method stub
-		return null;
+        VacationSummary vacationSum = new VacationSummary();
+        
+        vacationSum.setName("gbielanski");
+        vacationSum.setDaysAfterTheBirth(11);
+        vacationSum.setDaysChildCare(12);
+        vacationSum.setDaysJobSearch(13);
+        vacationSum.setDaysOnDemand(14);
+        vacationSum.setDaysOther(15);
+        vacationSum.setDaysParental(16);
+        vacationSum.setDaysSpecial(17);
+        vacationSum.setDaysUnpaid(18);
+        vacationSum.setDaysVacation(19);
+
+        return vacationSum;
 	}
 
 	@Override
