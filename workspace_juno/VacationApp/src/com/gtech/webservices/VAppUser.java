@@ -26,6 +26,9 @@ public class VAppUser {
 	@Min(0)
 	private int		supervisorReplacementIdn;
 	
+	@NotNull
+	private String	email;
+	
 	public int getUserIdn() {
 		return userIdn;
 	}
@@ -50,5 +53,11 @@ public class VAppUser {
 	public void setSupervisorReplacementIdn(int supervisorReplacementIdn) {
 		this.supervisorReplacementIdn = supervisorReplacementIdn;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}	
 
 }

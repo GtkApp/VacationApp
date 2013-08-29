@@ -84,6 +84,8 @@ public class VacationManagerImpl implements VacationManager {
 			e.printStackTrace();
 		}
 		
+		//System.out.println(String.format(val));
+		
         String user = val.substring(0, val.indexOf(':'));
         /*String pass = val.substring(val.indexOf(':') + 1);*/	
 		
@@ -94,7 +96,7 @@ public class VacationManagerImpl implements VacationManager {
     {
         //vacationSummaryDao.saveSummary(vacationSummaryDao.fakeVacationSummary());
 		//return vacationDAO.fakeVacationSummary();
-    	System.out.println(String.format("manageGetVacationSummary"));
+    	//System.out.println(String.format("manageGetVacationSummary"));
     	return vacationSummaryDao.getVacationSummary(getUserFromAuth(codedAuth));
     }
     
