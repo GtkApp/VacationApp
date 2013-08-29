@@ -8,8 +8,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<context:annotation-config/>
-	<import resource="classpath:persistence-config.xml"/>
-	<bean id="vacationDao" class="com.gtech.webservices.VacationDaoImpl"/>
-	<bean id="vacationSummaryDao" class="com.gtech.webservices.VacationSummaryDaoImpl"/>
-	<bean id="vacationAppUserDao" class="com.gtech.webservices.VAppUserDaoImpl"/>
-</beans>
+	
+	<import resource="classpath:dao-config.xml"/>
+	<bean id="vacationManager" class="com.gtech.webservices.VacationManagerImpl"/>			
+</beans>		

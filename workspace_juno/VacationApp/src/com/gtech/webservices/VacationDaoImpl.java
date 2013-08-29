@@ -1,19 +1,14 @@
 package com.gtech.webservices;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.jboss.resteasy.spi.NotFoundException;
-//import org.springframework.util.CollectionUtils;
-
-@Transactional
-public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
+public class VacationDaoImpl implements VacationDao{
 	
 	@Autowired
 	private SessionFactory sf;
@@ -23,144 +18,20 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
 		
 	}
 	
-	private Boolean isVacationPossible(Vacation vacationRequest, VacationSummary vacationSum)
-	{
-		int numberOfDays = vacationRequest.getNumberOfDays();
-		
-		switch(vacationRequest.getTypeOfVacation())
-		{
-		case VACATION: return numberOfDays<=vacationSum.getDaysVacation();
-		case UNPAID: return numberOfDays<=vacationSum.getDaysUnpaid();
-		case SPECIAL: return numberOfDays<=vacationSum.getDaysSpecial();
-		case AFTER_THE_BIRTH: return numberOfDays<=vacationSum.getDaysAfterTheBirth();
-		case CHILD_CARE: return numberOfDays<=vacationSum.getDaysChildCare();
-		case JOB_SEARCH: return numberOfDays<=vacationSum.getDaysJobSearch();
-		case ON_DEMOND: return numberOfDays<=vacationSum.getDaysOnDemand();
-		case OTHER: return numberOfDays<=vacationSum.getDaysOther();
-		case PARENTAL: return numberOfDays<=vacationSum.getDaysParental();
-		default:
-			return false; 
-			
-		}
-	}
-	
-	public Vacation addVacationRequest(Vacation vacationRequest, String user)
-	{
-		
-		VacationSummary vacationSum = getVacationSummary(user);
-		
-		if(isVacationPossible(vacationRequest, vacationSum) == false)
-			throw new NotFoundException("It is not possible to add vacation");
 
-		
-		save(vacationRequest);
-		
-		updateSummary(vacationRequest, vacationSum, UpdateType.UPDATE_DECREASE);
-		
-		//TODO
-		//getEscalationList(user);
-		
-		return vacationRequest; 
-		
-	}
-	
-	private Boolean isUpdatePossible(Vacation currentVacationRequest, Vacation newVacationRequest)
-	{
-		VacationStatus currentVacationStatus = currentVacationRequest.getStausOfVacationRequest();
-		VacationStatus newVacationStatus = newVacationRequest.getStausOfVacationRequest();
-		
-		if(currentVacationStatus == VacationStatus.CANCELLED || currentVacationStatus == VacationStatus.REJECTED)
-			return false;
-		
-		if(currentVacationStatus.ordinal() > newVacationStatus.ordinal())
-			return false;
-		
-		return true;
-	}
-	
-	private Boolean updateVacationSummaryAfterVacationUpdate(Vacation newVacation)
-	{
-		if(newVacation.getStausOfVacationRequest() == VacationStatus.CANCELLED || 
-				newVacation.getStausOfVacationRequest() == VacationStatus.REJECTED)
-			return true;
-		
-		return false;
-	}
-	
-	public Vacation updateVacationRequest(Vacation vacationRequest, String user)
-	{
-		VacationSummary vacationSum = getVacationSummary(user);
-		
-		Vacation currentVacationRequest = get(vacationRequest.getIdn());
-		
-		if(isUpdatePossible(currentVacationRequest, vacationRequest) == false)
-			throw new NotFoundException("It is not possible to update vacation");
-		
-		Vacation vacationUpdated =  update(vacationRequest);
-		
-		if(updateVacationSummaryAfterVacationUpdate(vacationUpdated)== true)
-			updateSummary(vacationUpdated, vacationSum, UpdateType.UPDATE_INCREASE);
-		
-		//TODO
-		//getEscalationList(user);
-				
-		return vacationUpdated;
-	}	
-	
 
 	//private void save(Vacation vacation) {
 	public void save(Vacation vacation) {	
 		sf.getCurrentSession().save(vacation);
 	}
-
-	public void saveSummary(VacationSummary vacation) {	
-		sf.getCurrentSession().save(vacation);
-	}
 	
-	
-	private void updateSummary(Vacation vacationRequest, VacationSummary vacationSummary, UpdateType updType) {
-
-		int factor = 1;
-		
-		if(updType == UpdateType.UPDATE_DECREASE)
-			factor = -1;
-
-		switch(vacationRequest.getTypeOfVacation())
-		{
-		case VACATION: vacationSummary.setDaysVacation(vacationSummary.getDaysVacation() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case UNPAID: vacationSummary.setDaysUnpaid(vacationSummary.getDaysUnpaid() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case SPECIAL: vacationSummary.setDaysSpecial(vacationSummary.getDaysSpecial() + factor * ( vacationRequest.getNumberOfDays()));
-			break;
-		case AFTER_THE_BIRTH: vacationSummary.setDaysAfterTheBirth(vacationSummary.getDaysAfterTheBirth() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case CHILD_CARE: vacationSummary.setDaysChildCare(vacationSummary.getDaysChildCare() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case JOB_SEARCH: vacationSummary.setDaysJobSearch(vacationSummary.getDaysJobSearch() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case ON_DEMOND: vacationSummary.setDaysOnDemand(vacationSummary.getDaysOnDemand() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case OTHER: vacationSummary.setDaysOther(vacationSummary.getDaysOther() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		case PARENTAL: vacationSummary.setDaysParental(vacationSummary.getDaysParental() + factor * (vacationRequest.getNumberOfDays()));
-			break;
-		default:
-			break; 
-			
-		}
-		
-		sf.getCurrentSession().update(vacationSummary);
-	}
-	
-	
-	private Vacation update(Vacation vacation) {
+	public Vacation update(Vacation vacation) {
 		
 		Vacation vacationForUpd= (Vacation)sf.getCurrentSession().get(Vacation.class, vacation.getIdn());
 		
 		vacationForUpd.setNumberOfDays(vacation.getNumberOfDays());
 		vacationForUpd.setTypeOfVacation(vacation.getTypeOfVacation());
-		vacationForUpd.setStausOfVacationRequest(vacation.getStausOfVacationRequest());
+		vacationForUpd.setStatusOfVacationRequest(vacation.getStatusOfVacationRequest());
 		
 		/* I am not sure if required*/
 		vacationForUpd.setUserName(vacation.getUserName());
@@ -189,16 +60,16 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
         
         Calendar cal1 = Calendar.getInstance();
         cal1.clear();
-        cal1.set(2013,4, 6);
+        cal1.set(2013,7, 3);
         
         Calendar cal2 = Calendar.getInstance();
         cal2.clear();
-        cal2.set(2013,5, 6);
+        cal2.set(2013,8, 3);
         vacation.setVacationSince(cal1);
         vacation.setVacationUntil(cal2);
         vacation.setNumberOfDays(20);
         vacation.setTypeOfVacation(VacationType.VACATION);
-        vacation.setStausOfVacationRequest(VacationStatus.WAITING_FOR_ACCEPTATION);
+        vacation.setStatusOfVacationRequest(VacationStatus.WAITING_FOR_ACCEPTATION);
         vacation.setNumberOfOutstandingDaysUsed(2);
 
         return vacation;
@@ -227,12 +98,12 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
     
     public List<Vacation> getVacationList(String user, String vSince, String vUntil)
     {
-    	List<Vacation> vacations = sf.getCurrentSession().createQuery("FROM " + Vacation.class.getName() + 
+    	List<Vacation> vacationList = sf.getCurrentSession().createQuery("FROM " + Vacation.class.getName() + 
     			" WHERE username = :user AND vacationsince > \'" + vSince + "\' AND vacationsince < \'" + vUntil +"\'")
     			.setString("user", user)
     			.list();
     	
-    	return vacations;
+    	return vacationList;
     	
     }
     
@@ -240,6 +111,23 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
     {
     	VacationSummary vacationSum= (VacationSummary)sf.getCurrentSession().createQuery("FROM " + VacationSummary.class.getName() + " WHERE name = :user").setString("user", user).uniqueResult();
     	return vacationSum;
+    }
+    
+    public  List<Vacation>  isUserAvailable(String username)
+    {
+    	Calendar calendardate = Calendar.getInstance();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	
+    	String strdate = sdf.format(calendardate.getTime());
+    	
+    	System.out.println(String.format("[OKO8] %s", strdate));
+    	
+    	List<Vacation> vacationList = sf.getCurrentSession().createQuery("FROM " + Vacation.class.getName() + 
+    			" WHERE username = :user AND vacationsince < \'" + strdate + "\' AND vacationuntil > \'" + strdate +"\'")
+    			.setString("user", username)
+    			.list(); 
+    	
+    	return vacationList;
     }
    /* 
     private EscalationList getEscalationList(String user)
