@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @RolesAllowed({"admin", "user"})
-@Path("/Rest")
+@Path("Deeper/Rest")
 public interface VacationAppInterface {
 	
 	@GET() @Path("/VacationList/{vacationSince}/{vacationUntil}")

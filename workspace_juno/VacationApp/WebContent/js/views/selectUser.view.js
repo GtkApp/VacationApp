@@ -16,7 +16,7 @@ App.Views.SelectUser = Backbone.View.extend({
     },
 
     render: function() {
-		console.log('selectUser render');
+	//	console.log('selectUser render');
 		
 		var self = this;	
 		var data = this.collection.toJSON();

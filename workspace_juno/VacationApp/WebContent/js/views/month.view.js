@@ -15,7 +15,7 @@ App.Views.Month = Backbone.View.extend({
     },
 
     render: function() {
-		console.log('Month render');
+		//console.log('Month render');
 		
 		var self = this;
 		var data = this.model.toJSON();

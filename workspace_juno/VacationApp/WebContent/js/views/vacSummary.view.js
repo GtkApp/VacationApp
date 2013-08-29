@@ -12,7 +12,6 @@ App.Views.VacSummary = Backbone.View.extend({
 		
 		var text = $('#template-request').text(); 
 		this.template = _.template( text ); 
-		console.log("reder vacsummary");
 		this.render();
     },
 
@@ -31,20 +30,7 @@ App.Views.VacSummary = Backbone.View.extend({
 		var Vacation = this.Create2DArray(10);
 
 		
-		_.each(this.collection.models, function (req){
-			//var userOptionView = new App.Views.UserOption({ model: user });
-			//self.$( '#selUser' ).append( userOptionView.$el );
-			
-			Vacation[req.get('type') - 1][0] = req.get('currYearVac');
-			Vacation[req.get('type') - 1][1] = req.get('prevYearVac');
-			Vacation[req.get('type') - 1][2] = req.get('usedVac');
-			Vacation[req.get('type') - 1][3] = Vacation[req.get('type') - 1][0] + Vacation[req.get('type') - 1][1] - Vacation[req.get('type') - 1][2];
-
-
-
-	//		var option = $("<option />").text(user.get("firstName")+ " "+user.get("lastName")).attr("value", user.get("id"));
-	//		self.$( '#selUser' ).append( option );
-		});
+		
 
 		var table = $("<table />");
 		var en_table = $("<table />");
@@ -55,7 +41,36 @@ App.Views.VacSummary = Backbone.View.extend({
 
 		var type = [];
 		var	reqType = [];
-		console.log("render = "+this.options.lang);
+		//console.log("render = "+this.options.lang);
+
+		_.each(this.collection.models, function (req){
+			//var userOptionView = new App.Views.UserOption({ model: user });
+			//self.$( '#selUser' ).append( userOptionView.$el );
+			
+			Vacation[0][0] = req.get('daysVacation');
+			Vacation[1][0] = req.get('daysUnpaid');
+			Vacation[2][0] = req.get('daysUnpaid');
+			Vacation[3][0] = req.get('daysUnpaid');
+			Vacation[4][0] = req.get('daysParental');
+			Vacation[5][0] = req.get('daysUnpaid');
+			Vacation[6][0] = req.get('daysOnDemand');
+			Vacation[7][0] = req.get('daysChildCare');
+			Vacation[8][0] = req.get('daysJobSearch');
+			
+			/*
+			Vacation[req.get('type') - 1][0] = req.get('currYearVac');
+			Vacation[req.get('type') - 1][1] = req.get('prevYearVac');
+			Vacation[req.get('type') - 1][2] = req.get('usedVac');
+			Vacation[req.get('type') - 1][3] = Vacation[req.get('type') - 1][0] + Vacation[req.get('type') - 1][1] - Vacation[req.get('type') - 1][2];
+*/
+
+
+	//		var option = $("<option />").text(user.get("firstName")+ " "+user.get("lastName")).attr("value", user.get("id"));
+	//		self.$( '#selUser' ).append( option );
+		});
+
+
+
 
 		if (this.options.lang == 2)		
 		{	

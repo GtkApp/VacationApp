@@ -41,8 +41,6 @@ App.Router = Backbone.Router.extend({
 			$('#li_Cal').addClass('active');
 			$('#li_Req').removeClass('active');
 
-
-
 	},
 
 	common_Req: function() {
@@ -53,9 +51,6 @@ App.Router = Backbone.Router.extend({
     		$('#year').removeClass('active');
 			$('#li_Cal').removeClass('active');
 			$('#li_Req').addClass('active');
-
-
-
 	},
 
 
@@ -63,7 +58,8 @@ App.Router = Backbone.Router.extend({
 
     index: function() {
         //this.displayYear(moment().year());
-   		
+    	this.common_Cal();
+		this.common_Pl();
 
    		App.calendar = new App.Models.Calendar();
 		App.calendarView = new App.Views.Calendar({model: App.calendar, el:'#calendar'});
@@ -85,7 +81,8 @@ App.Router = Backbone.Router.extend({
 		
 		App.calendar.fetch({
 			success: function(model,response,options){
-				model.set("selectedDays", response);
+
+				model.set("vacations", response);
 			},
 			error: function(model,xhr,options){
 				console.log('error'+model+' xhr='+xhr+' options='+options);
@@ -94,8 +91,7 @@ App.Router = Backbone.Router.extend({
 		});
 
     		
-			this.common_Cal();
-			this.common_Pl();
+			
 
 			
     },
@@ -112,22 +108,54 @@ App.Router = Backbone.Router.extend({
 
     vacSummary: function() {
 
+    		this.common_Req();
+			this.common_Pl();
 
+			App.listVac = new App.Collections.ListVac();
     		App.vacSummary = new App.Collections.VacSummary();
-			App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '1'});
+			
+
 
 			App.vacSummary.fetch({
-			success: function(model,response,options){
+				success: function(model,response,options){
+				},
+				error: function(model,xhr,options){
+					console.log(model);
+					console.log(xhr);
+					console.log(options);
+				}
+			
+			});
+
+
+
+
+
+    			
+    		
+    		
+    		
+    		    		
+
+			App.listView = new App.Views.ListView({collection: App.listVac, el: '#list', lang: '1'});
+			App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '1'});
+			var year = new Date().getFullYear();
+			App.listVac.url = "Deeper/Rest/VacationList/"+ year +"-01-01/"+year+"-12-31";
+			App.listVac.fetch({
+				success: function(model,response,options){
 			},
 			error: function(model,xhr,options){
-				console.log('error'+model+' xhr='+xhr+' options='+options);
-				alert('error');
-			}//,async:false
+				console.log(model);
+				console.log(xhr);
+				console.log(options);
+		
+			}
 		});
 
+			
+
       		
-			this.common_Req();
-			this.common_Pl();
+			
 	
 
 
@@ -135,11 +163,26 @@ App.Router = Backbone.Router.extend({
     },
     vacSummary_EN: function() {
 
+	
 		this.common_Req();
 		this.common_En();
 
 		App.vacSummary = new App.Collections.VacSummary();
 		App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '2'});
+    
+		console.log("Fetching...");
+
+		
+			App.vacSummary.fetch({
+			success: function(model,response,options){
+			},
+			error: function(model,xhr,options){
+				console.log(model);
+				console.log(xhr);
+				console.log(options);
+			}
+		});
+
     }
 
 });

@@ -18,7 +18,7 @@ import javax.validation.constraints.Min;
 public class Vacation{
 	@Id
 	@GeneratedValue	
-	private int id;
+	private int idn;
 	
 	@NotNull
 	private String userName;
@@ -63,12 +63,12 @@ public class Vacation{
 		this.typeOfVacation = typeOfVacation;
 	}
 
-	public int getId() {
-		return id;
+	public int getIdn() {
+		return idn;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdn(int idn) {
+		this.idn = idn;
 	}
 
 	  public String getUserName() {

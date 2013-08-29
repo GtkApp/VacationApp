@@ -19,7 +19,8 @@ App.Models.Day = Backbone.Model.extend({
 	
 		var dateStr = args.dateStr;
 		var mObj = moment(dateStr, this.get("dateFormat"));
-		
+
+			
 		this.set("dayOfMonth", mObj.date());
 		this.set("monthNumber", mObj.month());
 		this.set("yearNumber", mObj.year());
@@ -39,7 +40,7 @@ App.Models.Day = Backbone.Model.extend({
 	 //another solution is to not modify model during day selecting, but after send button pressing
 	 //the second solution would prevent delays during days selecting, because only DOM would be modified  
 	toggle: function(){
-
+		
 		var workingDay = !this.isWeekendOrHoliday();
 		if(workingDay){
 			var status = this.get("status");

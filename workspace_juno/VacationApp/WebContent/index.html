@@ -88,6 +88,7 @@
                     <div class="container">
                         <div class="row">
                             <div id="selectUser" style="background-color: #fff; padding-bottom:2em;"></div>
+                            <div id="list" class="span12" style="background-color: #eeeeee"></div>  
                             <div id="request" class="span12" style="background-color: #eeeeee">
                                 Body content
                             </div>
@@ -135,6 +136,8 @@
         <script src="js/vendor/backbone.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/moment.min.js"></script>
+        <script src="js/vendor/date.js"></script>
+
         
 
 		<script src="js/constants.js"></script>
@@ -146,11 +149,16 @@
         <script src="js/collections/month.collection.js"></script>
         <script src="js/models/year.model.js"></script>
         <script src="js/models/userVac.model.js"></script>
-        <script src="js/models/calendar.model.js"></script>
+        <script src="js/models/vacation.model.js"></script>
+        <script src="js/collections/vacations.collection.js"></script>
+       <script src="js/models/calendar.model.js"></script>
         <script src="js/models/rightPanel.model.js"></script>
         <script src="js/models/request.model.js"></script>
+
         <script src="js/collections/vacSummary.collection.js"></script>
 
+        <script src="js/models/listVac.model.js"></script>
+        <script src="js/collections/listVac.collection.js"></script>
         <script src="js/views/button.view.js"></script>
         <script src="js/views/selectUser.view.js"></script>
         <script src="js/views/day.view.js"></script>
@@ -159,8 +167,7 @@
         <script src="js/views/calendar.view.js"></script>
         <script src="js/views/rightPanel.view.js"></script>
         <script src="js/views/vacSummary.view.js"></script>
-
-
+        <script src="js/views/vacList.view.js"></script>
 
         <script src="js/router.js"></script>
         <script src="js/calendar.js"></script>
@@ -219,6 +226,20 @@
 
     </div>
 </script>
+
+
+<script id="template-list" type="text/template">
+    
+<div id="lst">
+
+</div>
+<div id="en_lst">
+
+</div>
+    
+
+</script>
+
 
 
 <script id="template-request" type="text/template">

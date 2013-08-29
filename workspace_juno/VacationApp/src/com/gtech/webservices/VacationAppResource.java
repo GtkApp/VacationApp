@@ -75,7 +75,7 @@ public class VacationAppResource implements VacationAppInterface{
         //vacationDAO.saveSummary(vacationDAO.fakeVacationSummary());
 		//return vacationDAO.fakeVacationSummary();
         
-        return vacationDAO.getVacationSummary(getUserFromAuth(auth));
+       return vacationDAO.getVacationSummary(getUserFromAuth(auth));
 	}
 
 	@Override

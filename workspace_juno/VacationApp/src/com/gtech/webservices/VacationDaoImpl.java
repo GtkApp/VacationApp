@@ -91,7 +91,7 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
 	{
 		VacationSummary vacationSum = getVacationSummary(user);
 		
-		Vacation currentVacationRequest = get(vacationRequest.getId());
+		Vacation currentVacationRequest = get(vacationRequest.getIdn());
 		
 		if(isUpdatePossible(currentVacationRequest, vacationRequest) == false)
 			throw new NotFoundException("It is not possible to update vacation");
@@ -156,7 +156,7 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
 	
 	private Vacation update(Vacation vacation) {
 		
-		Vacation vacationForUpd= (Vacation)sf.getCurrentSession().get(Vacation.class, vacation.getId());
+		Vacation vacationForUpd= (Vacation)sf.getCurrentSession().get(Vacation.class, vacation.getIdn());
 		
 		vacationForUpd.setNumberOfDays(vacation.getNumberOfDays());
 		vacationForUpd.setTypeOfVacation(vacation.getTypeOfVacation());
@@ -184,7 +184,7 @@ public class VacationDaoImpl extends HibernateDaoSupport implements VacationDao{
 	public Vacation fakeVacation(){
         Vacation vacation = new Vacation();
         
-        vacation.setId(1);
+        vacation.setIdn(1);
         vacation.setUserName("gbielanski");
         
         Calendar cal1 = Calendar.getInstance();
