@@ -31,7 +31,7 @@ public class MyTestRest {
                  client);
  
 		VacationAppInterface myREST = ProxyFactory.create(VacationAppInterface.class, "http://localhost:8080/VacationApp/Deeper/Rest/", executer);
-		VAppUserList list = myREST.getUserList("Z2JpZWxhbnNraToxMjM0");
+		VAppUserList list = myREST.getUserList();
 		
 		//System.out.println("=>>" + list);
 		fail("Not yet implemented");

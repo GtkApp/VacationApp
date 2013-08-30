@@ -21,7 +21,10 @@ public class VacationSummaryDaoImpl implements VacationSummaryDao{
 	@Override
 	public VacationSummary getVacationSummary(String user) {
 
+		System.out.println(String.format("FROM " + VacationSummary.class.getName() + " WHERE name = " + user));
 	    	VacationSummary vacationSum= (VacationSummary)sf.getCurrentSession().createQuery("FROM " + VacationSummary.class.getName() + " WHERE name = :user").setString("user", user).uniqueResult();
+
+	    	
 	    	return vacationSum;
 
 	}

@@ -16,6 +16,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 //import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 //import javax.ws.rs.QueryParam;
 //import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -26,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class VacationAppResource implements VacationAppInterface{
 	 @Resource(mappedName = "java:jboss/mail/VacApp_GMAIL")
 	 javax.mail.Session mailSession;
-	 
+	 @Context javax.servlet.http.HttpServletRequest sr; 
 	/*@Autowired
 	private VacationDao vacationDAO;*/
 	
@@ -37,10 +38,12 @@ public class VacationAppResource implements VacationAppInterface{
 	@GET
 	@Path("/VacationList/{vacationSince}/{vacationUntil}")
 	@Produces({ "application/json", "application/xml" })
-	public VacationList getVacationList(String codedAuth, String vacationSince, String vacationUntil) {		
-					
+	public VacationList getVacationList(String vacationSince, String vacationUntil) {		
+		
+		//System.out.println(String.format("[OKO getRemoteUse] %s", sr.getRemoteUser()));
+		
 		VacationList vacationList = new VacationList();
-		vacationList.setVacations(vacationManager.manageGetVacationList(codedAuth, vacationSince, vacationUntil));
+		vacationList.setVacations(vacationManager.manageGetVacationList(sr.getRemoteUser(), vacationSince, vacationUntil));
 		
 		return vacationList;
 	}
@@ -48,9 +51,9 @@ public class VacationAppResource implements VacationAppInterface{
 	@GET
 	@Path("/VacationSummary")
 	@Produces({ "application/json", "application/xml" })
-	public VacationSummary getVacationSummary(String auth) {
+	public VacationSummary getVacationSummary() {
         
-        return vacationManager.manageGetVacationSummary(auth);
+        return vacationManager.manageGetVacationSummary(sr.getRemoteUser());
 
 	}
 	
@@ -58,11 +61,11 @@ public class VacationAppResource implements VacationAppInterface{
 	@GET
 	@Path("/VacationListByUser/{vacationSince}/{vacationUntil}/{userIdn}")
 	@Produces({ "application/json", "application/xml" })
-	public VacationList getVacationList(String codedAuth, String vacationSince, String vacationUntil, int userIdn) {		
+	public VacationList getVacationList(String vacationSince, String vacationUntil, int userIdn) {		
 					
 		VacationList vacationList = new VacationList();
 		
-		vacationList.setVacations(vacationManager.manageGetVacationList(codedAuth, vacationSince, vacationUntil, userIdn));
+		vacationList.setVacations(vacationManager.manageGetVacationList(sr.getRemoteUser(), vacationSince, vacationUntil, userIdn));
 		
 		return vacationList;
 	}
@@ -70,9 +73,9 @@ public class VacationAppResource implements VacationAppInterface{
 	@GET
 	@Path("/VacationSummaryByUser/{userIdn}")
 	@Produces({ "application/json", "application/xml" })
-	public VacationSummary getVacationSummary(String auth, int userIdn) {
+	public VacationSummary getVacationSummary(int userIdn) {
         
-        return vacationManager.manageGetVacationSummary(auth, userIdn);
+        return vacationManager.manageGetVacationSummary(sr.getRemoteUser(), userIdn);
 
 	}
 
@@ -81,11 +84,11 @@ public class VacationAppResource implements VacationAppInterface{
 	@Path("/NewVacation")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Vacation addVacation(String codedAuth, Vacation vacation) {
+	public Vacation addVacation(Vacation vacation) {
 		// TODO Auto-generated method stub
 		//EscalationList escalation = 
 	    //vacationDAO.addVacationRequest(vacation, auth/*getUserFromAuth(auth)*/);
-	    vacationManager.manageNewVacationRequest(vacation, codedAuth);
+	    vacationManager.manageNewVacationRequest(vacation, sr.getRemoteUser());
 		//TODO ESCALATE!!!
 		//vacationDAO.save(vacation);
 		return vacation;
@@ -97,21 +100,21 @@ public class VacationAppResource implements VacationAppInterface{
 	@Path("/ExistingVacation")
 	@Consumes({ "application/json", "application/xml" })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Vacation updateVacation(String codedAuth, Vacation vacation) {
+	public Vacation updateVacation(Vacation vacation) {
 		
 		//Vacation vUpdated = vacationDAO.updateVacationRequest(vacation, auth/*getUserFromAuth(auth)*/);
-		Vacation vUpdated = vacationManager.updateExistingVacation(vacation, codedAuth);
+		Vacation vUpdated = vacationManager.updateExistingVacation(vacation, sr.getRemoteUser());
 		return vUpdated;
 	}
 
 	@RolesAllowed({"admin"})
 	@GET() @Path("/DependentUserList")	
 	@Produces({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
-	public VAppUserList getUserList(@HeaderParam("Authorization") String codedAuth)
+	public VAppUserList getUserList()
 	{
 		VAppUserList userList =  new VAppUserList();
 		
-		userList.setUserList(vacationManager.manageGetUserList(codedAuth));
+		userList.setUserList(vacationManager.manageGetUserList(sr.getRemoteUser()));
 		
 		return userList;
 	}
@@ -127,11 +130,11 @@ public class VacationAppResource implements VacationAppInterface{
 	@RolesAllowed({"admin"})
 	@GET() @Path("/ReportUserStat")
 	@Produces({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
-	public UserStatList getUserStatusList(@HeaderParam("Authorization") String auth)
+	public UserStatList getUserStatusList()
 	{
 		UserStatList userStatList = new UserStatList();
 		
-		userStatList.setUserStatusList(vacationManager.manageGetUserStatusList(auth));
+		userStatList.setUserStatusList(vacationManager.manageGetUserStatusList(sr.getRemoteUser()));
 		
 		return userStatList;
 	}

@@ -73,6 +73,8 @@ public class VacationManagerImpl implements VacationManager {
 	}
 	private String getUserFromAuth(String auth)
 	{
+		if (auth == null)
+			return "gbielanski";
 		String userAndPassword64 = auth.replace("Basic ", "");
 		
 		byte[] encodedDataAsBytes =  javax.xml.bind.DatatypeConverter.parseBase64Binary(userAndPassword64);
@@ -92,15 +94,16 @@ public class VacationManagerImpl implements VacationManager {
         return user;
 	}
 	
-    public VacationSummary manageGetVacationSummary(String codedAuth)
+    public VacationSummary manageGetVacationSummary(String loggedUser)
     {
         //vacationSummaryDao.saveSummary(vacationSummaryDao.fakeVacationSummary());
 		//return vacationDAO.fakeVacationSummary();
     	//System.out.println(String.format("manageGetVacationSummary"));
-    	return vacationSummaryDao.getVacationSummary(getUserFromAuth(codedAuth));
+
+    	return vacationSummaryDao.getVacationSummary(loggedUser);
     }
     
-    public List<Vacation> manageGetVacationList(String codedAuth, String vSince, String vUntil)
+    public List<Vacation> manageGetVacationList(String loggedUser, String vSince, String vUntil)
     {
     	//vacationDao.save(vacationDao.fakeVacation());
 		DateFormat formatter ; 
@@ -119,19 +122,19 @@ public class VacationManagerImpl implements VacationManager {
 		}
 		
 		System.out.println(String.format("manageGetVacationList"));
-		return vacationDao.getVacationList(getUserFromAuth(codedAuth), vSince, vUntil);
+		return vacationDao.getVacationList(loggedUser, vSince, vUntil);
     }
        
-    public VacationSummary manageGetVacationSummary(String codedAuth, int userIdn)
+    public VacationSummary manageGetVacationSummary(String loggedUser, int userIdn)
     {
     	VAppUser user = vacationAppUserDao.get(userIdn);
-        //vacationDAO.saveSummary(vacationDAO.fakeVacationSummary());
+        //vacationSummaryDao.saveSummary(vacationSummaryDao.fakeVacationSummary());
 		//return vacationDAO.fakeVacationSummary();
     	System.out.println(String.format("manageGetVacationSummary"));
     	return vacationSummaryDao.getVacationSummary(user.getUserName());
     }
     
-    public List<Vacation> manageGetVacationList(String codedAuth, String vSince, String vUntil, int userIdn)
+    public List<Vacation> manageGetVacationList(String loggedUser, String vSince, String vUntil, int userIdn)
     {
     	//vacationDAO.save(vacationDAO.fakeVacation());
 		DateFormat formatter ; 
@@ -158,13 +161,13 @@ public class VacationManagerImpl implements VacationManager {
 		return vacationDao.getVacationList(user.getUserName(), vSince, vUntil);
     }    
     
-	public Vacation manageNewVacationRequest(Vacation vacationRequest, String codedAuth)
+	public Vacation manageNewVacationRequest(Vacation vacationRequest, String loggedUser)
 	{
 		
-		VacationSummary vacationSum = vacationSummaryDao.getVacationSummary(getUserFromAuth(codedAuth));
+		VacationSummary vacationSum = vacationSummaryDao.getVacationSummary(loggedUser);
 		
 		if(isVacationPossible(vacationRequest, vacationSum) == false)
-			throw new NotFoundException("It is not possible to add vacation");
+			throw new NotFoundException("It is not possible to add vacation. Not enough days.");
 
 		
 		vacationDao.save(vacationRequest);
@@ -179,9 +182,9 @@ public class VacationManagerImpl implements VacationManager {
 		
 	}
 	
-	public Vacation updateExistingVacation(Vacation vacationRequest, String codedAuth)
+	public Vacation updateExistingVacation(Vacation vacationRequest, String loggedUser)
 	{
-		VacationSummary vacationSum = vacationSummaryDao.getVacationSummary(getUserFromAuth(codedAuth));
+		VacationSummary vacationSum = vacationSummaryDao.getVacationSummary(loggedUser);
 		
 		Vacation currentVacationRequest = vacationDao.get(vacationRequest.getIdn());
 		
@@ -199,25 +202,24 @@ public class VacationManagerImpl implements VacationManager {
 		return vacationUpdated;
 	}
 	
-	public  List<VAppUser> manageGetUserList(String codedAuth)
+	public  List<VAppUser> manageGetUserList(String loggedUser)
 	{
-		String supervisorName = getUserFromAuth(codedAuth);
-		
+		String supervisorName = loggedUser;
 		VAppUser user = vacationAppUserDao.getByName(supervisorName);
 		
 		if(user == null)
-			throw new NotFoundException("User not found: " + supervisorName);
+			throw new NotFoundException("User not found: " + loggedUser);
 		
 		int supervisorId = user.getUserIdn();
 		
 		return vacationAppUserDao.getDependentUserList(supervisorId);
 	} 	
 	
-	public  List<UserStat> manageGetUserStatusList(String codedAuth)
+	public  List<UserStat> manageGetUserStatusList(String loggedUser)
 	{
 		 List<UserStat> userStatList =  new ArrayList<UserStat>();
 		 
-		String supervisorName = getUserFromAuth(codedAuth);
+		String supervisorName = loggedUser;
 		VAppUser user = vacationAppUserDao.getByName(supervisorName);
 		if(user == null)
 			throw new NotFoundException("User not found: " + supervisorName);
