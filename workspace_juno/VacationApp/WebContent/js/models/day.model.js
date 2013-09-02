@@ -47,9 +47,10 @@ App.Models.Day = Backbone.Model.extend({
 			var vacationDays = this.get("parent").get("userVac").get("vacationDays");			
 	    	var dates = _.pluck(vacationDays, "dateStr");
 	    	var idx = _.indexOf(dates, this.get("dateStr"));
-	    	if (idx == -1 && (status == "" || status == CONST.statusMarked) ) {
+	    	if (idx == -1 && (status == "" || status == CONST.statusMarked) || status == 4 ) {
 	    		var obj = {"dateStr": this.get("dateStr"), "status": this.get("status")};
 	    		vacationDays.push(obj);
+
 	    		console.log(obj.dateStr+" added");
 	    	}
 	    	else{
@@ -64,7 +65,8 @@ App.Models.Day = Backbone.Model.extend({
 			this.set("selected", !this.get("selected"));
 			var selected = this.get("selected");
 			
-			if (status == "" || status == CONST.statusMarked){
+			if (status == "" || status == CONST.statusMarked)
+			{	
 				if (selected){
 					this.set("status", CONST.statusMarked);
 				}
@@ -72,6 +74,7 @@ App.Models.Day = Backbone.Model.extend({
 					this.set("status", "");	
 				}	
 			}
+			
 			console.log("selected : "+ selected+" status : "+this.get("status"));
 			console.log(vacationDays);
 		}

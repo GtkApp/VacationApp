@@ -25,7 +25,7 @@ App.Views.RightPanel = Backbone.View.extend({
     	"click button.cancel-vac": 'cancel'
     },
     send: function(){
-    	console.log("send !!!");
+    	
 //		console.log(this.model.toJSON());  
 
         //console.log(this);
@@ -53,20 +53,31 @@ App.Views.RightPanel = Backbone.View.extend({
             }
 
             numberOfDays++;
+
+            vacationDays.splice(i,1);
+            
         }
 
-        App.vacation.set("idn", 0);         
-        App.vacation.set("numberOfDays", numberOfDays);
-        App.vacation.set("numberOfOutstandingDaysUsed", 0);
-        App.vacation.set("stausOfVacationRequest", "WAITING_FOR_ACCEPTATION");
-        App.vacation.set("typeOfVacation", "VACATION");
-        App.vacation.set("userName", "gbielanski");
-        App.vacation.set("vacationSince", vacationSince);
-        App.vacation.set("vacationUntil", vacationUntil);
-        console.log(vacationSince);
-        console.log(vacationUntil);
-        /*
-        App.vacation.url = "https://localhost:8443/VacationApp/Deeper/Rest/NewVacation";
+
+        //check if days are no used yet
+
+
+        if (numberOfDays && vacationSince && vacationUntil)
+        {
+            
+            App.vacation.set("idn", 0);         
+            App.vacation.set("numberOfDays", numberOfDays);
+            App.vacation.set("numberOfOutstandingDaysUsed", 0);
+            App.vacation.set("statusOfVacationRequest", "WAITING_FOR_ACCEPTATION");
+            App.vacation.set("typeOfVacation", "VACATION");
+            App.vacation.set("userName", "gbielanski");
+            App.vacation.set("vacationSince", vacationSince);
+            App.vacation.set("vacationUntil", vacationUntil);
+            console.log("vacation from "+vacationSince);
+            console.log("vacation until "+vacationUntil);
+   
+            App.vacation.url = "https://localhost:8443/VacationApp/Deeper/Rest/NewVacation";
+            console.log("send !!!");
             App.vacation.save({
             },
             {
@@ -77,20 +88,26 @@ App.Views.RightPanel = Backbone.View.extend({
                     console.log("save error");
                 }
             });
-        */
-		
+        
+		}
 		//this.model.saveData();
     },
     
     cancel: function(){
-    	console.log("cancel !!!")
-    	console.log(this.model.toJSON());
+    	console.log("cancel !!!");
+        var userVac = new App.Models.UserVac(this.model.userVac);
+        vacationDays = (userVac.get("vacationDays"));
+
+
+
+
+    	
 
         App.vacation = new App.Models.Vacation();
         App.vacation.set("idn", 11);
         App.vacation.set("numberOfDays", 2);
         App.vacation.set("numberOfOutstandingDaysUsed", 0);
-        App.vacation.set("stausOfVacationRequest", "WAITING_FOR_CANCELLATION");
+        App.vacation.set("statusOfVacationRequest", "WAITING_FOR_CANCELLATION");
         App.vacation.set("typeOfVacation", "VACATION");
         App.vacation.set("userName", "gbielanski");
         //App.vacation.set("vacationSince", "2013-10-11");
@@ -110,30 +127,50 @@ App.Views.RightPanel = Backbone.View.extend({
             });
 */
         //read day
+
+
+
         var userVac = new App.Models.UserVac(this.model.userVac);
-        var vacations = new App.Collections.Vacations(this.model.vacations);
-        vacationDays = (userVac.get("vacationDays"));
-        console.log("vacation = ");
-        console.log(vacation);
-        for (var i in vacationDays)
-        {      
-                   
+        var vacation = this.model.get('vacations').vacations;
 
-//zaznaczony urlop do skasowania
-                   vacationDays[i].dateStr;
-                   
+        console.log(vacationDays);
+
+        //vacationDays = (userVac.get("vacationDays"));
+        
+        var found = 0;
 
 
+       for (var j in vacationDays)
+       {
 
-            
+ 
+           for (var i in vacation)
+            {
+                
+                dcancel = new Date.parse(vacationDays[j].dateStr); 
+                dsince = new Date(vacation[i].vacationSince).clearTime();        
+                duntil = new Date(vacation[i].vacationUntil).clearTime();
 
+
+                if (dcancel.between(dsince, duntil))
+                {
+                        if (vacation[i].statusOfVacationRequest == "ACCEPTED" || 
+                            vacation[i].statusOfVacationRequest == "WAITING_FOR_ACCEPTATION")
+                        {    
+
+                            console.log("day in vacation id ="+vacation[i].idn);
+                            found = 1;  
+                            vacationDays.splice(j,1);
+                            alert("Request for cancellation sent");
+                            break;
+                        }
+                }    
+        
+            }
         }
 
-
-
-
-        //find vacation id
-
+        if (found == 0)
+            console.log("no such vacation");
 
     }
 

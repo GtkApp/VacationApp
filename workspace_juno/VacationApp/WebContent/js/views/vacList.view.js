@@ -28,7 +28,7 @@ App.Views.ListView = Backbone.View.extend({
 		var table = $("<table />");
 		var en_table = $("<table />");
 		var thead = $('<thead />');
-		var tbody = $('<tbody />');
+		var tbody = $('<tbody id="buttons" />');
 		var trow = $('<tr />');
 		var tcol = $('<td />');
 
@@ -41,8 +41,8 @@ App.Views.ListView = Backbone.View.extend({
 			//self.$( '#selUser' ).append( userOptionView.$el );
 			Vacation = req.get("vacations");
 
-			console.log("vacList:");			
-			console.log(Vacation);
+		//	console.log("vacList:");			
+		//	console.log(Vacation);
 			
 
 	//		var option = $("<option />").text(user.get("firstName")+ " "+user.get("lastName")).attr("value", user.get("id"));
@@ -58,7 +58,7 @@ App.Views.ListView = Backbone.View.extend({
 		}
 		else
 		{	
-			type.push('LP', 'Od', 'Do', 'Dni',  'Drukuj wniosek');
+			type.push('LP', 'Od', 'Do', 'Dni', 'Status', 'Drukuj wniosek');
 		}		
 
 
@@ -70,7 +70,7 @@ App.Views.ListView = Backbone.View.extend({
 		trow.appendTo(thead);
 		thead.appendTo(table);
 
-		
+		var order = 0;
 		for (i in Vacation )
 		{
 			var row = $('<tr />');
@@ -84,16 +84,19 @@ App.Views.ListView = Backbone.View.extend({
 
 			d =  new Date(Vacation[i].vacationUntil);
 			col = $('<td>'+d.toString("yyyy-MM-dd")+'</td>');
-
-
 			col.appendTo(row);
 			
 			col = $('<td>'+Vacation[i].numberOfDays+'</td>');
 			col.appendTo(row);
+			col = $('<td>'+Vacation[i].statusOfVacationRequest+'</td>');
+			col.appendTo(row);
+			col = $('<td><button id="btn-'+order+'" class="btn">'+"Anuluj urlop"+'</button></td>');
+			col.appendTo(row);
 			row.appendTo(tbody);		
+			order++;
 		}
 		tbody.appendTo(table);
-		var tbody = $('<tbody />');
+	//	var tbody = $('<tbody />');
 		table.attr("id", "req-table");		
 		self.$( '#lst' ).append( table );
     	return this; 

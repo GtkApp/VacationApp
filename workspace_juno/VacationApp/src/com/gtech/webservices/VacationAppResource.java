@@ -21,8 +21,8 @@ import javax.ws.rs.core.Context;
 //import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.annotations.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 public class VacationAppResource implements VacationAppInterface{
 	 @Resource(mappedName = "java:jboss/mail/VacApp_GMAIL")

@@ -13,12 +13,9 @@
   <listener>
   	<listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
   </listener>    
- 
  <welcome-file-list>
  <welcome-file>index.html</welcome-file>
  </welcome-file-list>
- 
- 
   <servlet-mapping>
     <servlet-name>Resteasy</servlet-name>
     <url-pattern>/Deeper/*</url-pattern>
@@ -31,12 +28,11 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:applicationContext.xml</param-value>
   </context-param>
-  
-  
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Resteasy</web-resource-name>
-      <url-pattern>/index/*</url-pattern>
+      <url-pattern>/</url-pattern>
+      <url-pattern>/Deeper/*</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
@@ -49,12 +45,12 @@
     </user-data-constraint>
   </security-constraint>
   <login-config>
-    <auth-method>FORM</auth-method>
+  <auth-method>FORM</auth-method>
   <form-login-config>
     <form-login-page>/login.html</form-login-page>
     <form-error-page>/error.html</form-error-page>
   </form-login-config>
-  <!--  <auth-method>BASIC</auth-method>
+   <!--   <auth-method>BASIC</auth-method>
     <realm-name>ApplicationRealm</realm-name> -->
   </login-config>
   <security-role>

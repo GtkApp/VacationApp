@@ -85,9 +85,9 @@ obiekcie jest użyty
 
 				var userVac = new App.Models.UserVac();
 				var vacationDays = new App.Collections.Vacations();	
-				
 				for (var i in response.vacations)
 				{			
+
 					data = new Date(response.vacations[i].vacationSince);
 					for (var day = 0; day < response.vacations[i].numberOfDays; day++)
 					{
@@ -98,9 +98,8 @@ obiekcie jest użyty
 							}
 						
 						var vacation = new App.Models.Vacation({
-						"dateStr": data.toString("yyyy-MM-dd"),
-						
-						"status": response.vacations[i].stausOfVacationRequest
+						"dateStr": data.toString("yyyy-MM-dd"),				
+						"status": response.vacations[i].statusOfVacationRequest
 					});	
 					
 						vacationDays.add(vacation);
@@ -111,6 +110,7 @@ obiekcie jest użyty
 
 				userVac.set("vacationDays", vacationDays);
 				model.set("userVac", userVac);
+
 			},
 			error: function(model,xhr,options){
 				alert('error');
@@ -196,7 +196,7 @@ obiekcie jest użyty
 	url : function() {
 	  	//console.log("data/userVac_"+this.get("userId")+"_"+this.get("yearNumber")+".json");
 	  //  return "data/userVac_"+this.get("userId")+"_"+this.get("yearNumber")+".json";
-	return "https://localhost:8443/VacationApp/Deeper/Rest/VacationList/"+this.get("yearNumber")+"-04-01/"+this.get("yearNumber")+"-12-20"
+	return "https://localhost:8443/VacationApp/Deeper/Rest/VacationList/"+this.get("yearNumber")+"-01-01/"+this.get("yearNumber")+"-12-31"
 	},
 
 
