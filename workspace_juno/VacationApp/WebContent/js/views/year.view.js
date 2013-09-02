@@ -14,7 +14,7 @@ App.Views.Year = Backbone.View.extend({
     },
 
     render: function() {
-    	console.log('Year render');
+    	//console.log('Year render');
     	
 		var data = this.model.toJSON();
 		

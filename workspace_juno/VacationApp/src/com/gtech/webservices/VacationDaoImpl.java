@@ -19,6 +19,7 @@ public class VacationDaoImpl implements VacationDao{
 	}
 	
 
+
 	//private void save(Vacation vacation) {
 	public void save(Vacation vacation) {	
 		sf.getCurrentSession().save(vacation);

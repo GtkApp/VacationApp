@@ -5,6 +5,8 @@ App.Router = Backbone.Router.extend({
 		"tab1/EN": "index_EN",
 		"tab2":"vacSummary",
 		"tab2/EN": "vacSummary_EN",
+		"tab3": "admin",
+		"tab3/EN": "admin_EN",
 		"":"index",
 	},
 
@@ -13,7 +15,9 @@ App.Router = Backbone.Router.extend({
 			$("#cal-but").prop("href", "#tab1");
 			$('#cal-but').text("Kalendarz");
 			$('#Reqs').prop("href", "#tab2");
-			$('#Reqs').text("Wnioski");			
+			$('#Reqs').text("Wnioski");		
+			$('#Adm').prop("href", "#tab3");
+			$('#Adm').text("Administracja");	
 			$('#appName').text("Aplikacja Urlopowa");
 			$('#appName').prop("href", "#");
 	},
@@ -25,7 +29,8 @@ App.Router = Backbone.Router.extend({
 			$('#cal-but').text("Calendar");
 			$('#Reqs').prop("href", "#tab2/EN");
 			$('#Reqs').text("Requests");
-			
+			$('#Adm').prop("href", "#tab3/EN");
+			$('#Adm').text("Admin");
 			$('#appName').text("Vacation Application");
 			$('#appName').prop("href", "#tab1/EN");
 	},
@@ -33,15 +38,17 @@ App.Router = Backbone.Router.extend({
 	common_Cal: function() {
 	
 			$('#calendar').removeClass('hide');
-
+    		$('#tab1').removeClass('hide');
+    		$('#tab1').addClass('active');
     		$('#tab2').addClass('hide');
     		$('#tab2').removeClass('active');
+    		$('#tab3').addClass('hide');
+    		$('#tab3').removeClass('active');
     		$('#rightPanel').removeClass('hide');
-    		
+    		$('#li_Adm').removeClass('active');
+ 
 			$('#li_Cal').addClass('active');
 			$('#li_Req').removeClass('active');
-
-
 
 	},
 
@@ -49,12 +56,31 @@ App.Router = Backbone.Router.extend({
 
 			$('#calendar').addClass('hide');    	
 			$('#rightPanel').addClass('hide');
+    		$('#tab1').addClass('hide');
+    		$('#tab1').removeClass('active');
     		$('#tab2').addClass('active');
+    		$('#tab2').removeClass('hide');
+    		$('#tab3').removeClass('active');
+    		$('#tab3').addClass('hide');
     		$('#year').removeClass('active');
 			$('#li_Cal').removeClass('active');
 			$('#li_Req').addClass('active');
+			$('#li_Adm').removeClass('active');
+	},
+		common_Adm: function() {
 
-
+			$('#calendar').addClass('hide');
+			$('#rightPanel').addClass('hide');
+    		$('#tab1').addClass('hide');
+    		$('#tab1').removeClass('active');
+    		$('#tab2').addClass('hide');
+    		$('#tab2').removeClass('active');
+    		$('#tab3').removeClass('hide');
+    		$('#tab3').addClass('active');
+    		$('#year').removeClass('active');
+			$('#li_Cal').removeClass('active');
+			$('#li_Req').removeClass('active');
+			$('#li_Adm').addClass('active');
 
 	},
 
@@ -63,7 +89,8 @@ App.Router = Backbone.Router.extend({
 
     index: function() {
         //this.displayYear(moment().year());
-   		
+    	this.common_Cal();
+		this.common_Pl();
 
    		App.calendar = new App.Models.Calendar();
 		App.calendarView = new App.Views.Calendar({model: App.calendar, el:'#calendar'});
@@ -74,8 +101,10 @@ App.Router = Backbone.Router.extend({
 			success: function(model,response,options){
 			},
 			error: function(model,xhr,options){
-				console.log('error'+model+' xhr='+xhr+' options='+options);
-				alert('error');
+				//console.log('error'+model+' xhr='+xhr+' options='+options);
+				console.log(model);
+				console.log(xhr);
+				console.log(options);
 			}//,async:false
 		});
 		
@@ -85,7 +114,8 @@ App.Router = Backbone.Router.extend({
 		
 		App.calendar.fetch({
 			success: function(model,response,options){
-				model.set("selectedDays", response);
+
+				model.set("vacations", response);
 			},
 			error: function(model,xhr,options){
 				console.log('error'+model+' xhr='+xhr+' options='+options);
@@ -94,8 +124,7 @@ App.Router = Backbone.Router.extend({
 		});
 
     		
-			this.common_Cal();
-			this.common_Pl();
+			
 
 			
     },
@@ -112,11 +141,91 @@ App.Router = Backbone.Router.extend({
 
     vacSummary: function() {
 
+    		this.common_Req();
+			this.common_Pl();
 
+			App.listVac = new App.Collections.ListVac();
     		App.vacSummary = new App.Collections.VacSummary();
-			App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '1'});
+			
+
 
 			App.vacSummary.fetch({
+				success: function(model,response,options){
+				},
+				error: function(model,xhr,options){
+					console.log(model);
+					console.log(xhr);
+					console.log(options);
+				}
+			
+			});
+
+
+
+    		
+    		
+    		    		
+
+			App.listView = new App.Views.ListView({collection: App.listVac, el: '#list', lang: '1'});
+			App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '1'});
+			var year = new Date().getFullYear();
+			App.listVac.url = "Deeper/Rest/VacationList/"+ year +"-01-01/"+year+"-12-31";
+			App.listVac.fetch({
+				success: function(model,response,options){
+			
+
+
+
+			},
+			error: function(model,xhr,options){
+				console.log(model);
+				console.log(xhr);
+				console.log(options);
+		
+			}
+		});
+
+			
+
+      		
+			
+	
+
+
+
+    },
+    vacSummary_EN: function() {
+
+	
+		this.common_Req();
+		this.common_En();
+
+		App.vacSummary = new App.Collections.VacSummary();
+		App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '2'});
+    
+		console.log("Fetching...");
+
+		
+			App.vacSummary.fetch({
+			success: function(model,response,options){
+			},
+			error: function(model,xhr,options){
+				console.log(model);
+				console.log(xhr);
+				console.log(options);
+			}
+		});
+
+    },
+        admin: function() {
+
+	    this.common_Adm();
+	    this.common_Pl();
+
+		
+		App.users = new App.Collections.User();
+		App.selectUserView = new App.Views.SelectUser({collection: App.users, el:'#selectUserAdm'});
+		App.users.fetch({
 			success: function(model,response,options){
 			},
 			error: function(model,xhr,options){
@@ -125,21 +234,30 @@ App.Router = Backbone.Router.extend({
 			}//,async:false
 		});
 
-      		
-			this.common_Req();
-			this.common_Pl();
-	
-
-
-
+	    App.admin = new App.Models.Admin();
+	    App.adminView = new App.Views.Admin({model: App.admin, el: '#admin1', lang: '1'});
+	    
     },
-    vacSummary_EN: function() {
+    
+    admin_EN: function() {
 
-		this.common_Req();
-		this.common_En();
+	    this.common_Adm();
+	    this.common_En();
+	    
+		App.users = new App.Collections.User();
+		App.selectUserView = new App.Views.SelectUser({collection: App.users, el:'#selectUserAdm'});
+		App.users.fetch({
+			success: function(model,response,options){
+			},
+			error: function(model,xhr,options){
+				console.log('error'+model+' xhr='+xhr+' options='+options);
+//				alert('error');
+			}//,async:false
+		});
 
-		App.vacSummary = new App.Collections.VacSummary();
-		App.summaryView = new App.Views.VacSummary({collection: App.vacSummary, el:'#request', lang: '2'});
+	    App.admin = new App.Models.Admin();
+	    App.adminView = new App.Views.Admin(/*{model: App.admin, el: '#admin1', lang: '2'}*/);
+
     }
 
 });

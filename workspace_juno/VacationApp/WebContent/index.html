@@ -29,6 +29,7 @@
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
+
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
@@ -63,6 +64,8 @@
             <ul class="nav nav-tabs">
                 <li class="active" id="li_Cal"><a href="#tab1" id="cal-but"> Kalendarz</a></li>
                 <li id="li_Req"><a href="#tab2" id="Reqs" >Wnioski</a></li>
+                <li id="li_Adm"><a href="#tab3" id="Adm" >Zatwierdzanie</a></li>
+
             </ul>
             <div class="tab-content">
                 <div  id="tab1">
@@ -87,13 +90,26 @@
                 <div  id="tab2">
                     <div class="container">
                         <div class="row">
-                            <div id="selectUser" style="background-color: #fff; padding-bottom:2em;"></div>
+<!--                            <div id="selectUser" style="background-color: #fff; padding-bottom:2em;"></div>-->
+                            <div id="list" class="span12" style="background-color: #eeeeee"></div>  
                             <div id="request" class="span12" style="background-color: #eeeeee">
                                 Body content
                             </div>
 
 
 
+                        </div>
+                    </div>
+                </div>
+                <div id="tab3">
+                    <div class="container">
+                        <div class="row" style="background-color: #fff">
+                          <div class="span10">
+                            <div id="selectUserAdm" style="background-color: #fff; padding-bottom:2em;"></div>
+                            <div id="admin1" style="background-color: #ffeeee; padding-bottom:2em;">
+                                Body content
+                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -135,6 +151,8 @@
         <script src="js/vendor/backbone.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/moment.min.js"></script>
+        <script src="js/vendor/date.js"></script>
+
         
 
 		<script src="js/constants.js"></script>
@@ -146,10 +164,17 @@
         <script src="js/collections/month.collection.js"></script>
         <script src="js/models/year.model.js"></script>
         <script src="js/models/userVac.model.js"></script>
-        <script src="js/models/calendar.model.js"></script>
+        <script src="js/models/vacation.model.js"></script>
+        <script src="js/collections/vacations.collection.js"></script>
+       <script src="js/models/calendar.model.js"></script>
         <script src="js/models/rightPanel.model.js"></script>
         <script src="js/models/request.model.js"></script>
+
         <script src="js/collections/vacSummary.collection.js"></script>
+
+        <script src="js/models/listVac.model.js"></script>
+        <script src="js/collections/listVac.collection.js"></script>
+        <script src="js/models/admin.model.js"></script>
 
         <script src="js/views/button.view.js"></script>
         <script src="js/views/selectUser.view.js"></script>
@@ -159,8 +184,8 @@
         <script src="js/views/calendar.view.js"></script>
         <script src="js/views/rightPanel.view.js"></script>
         <script src="js/views/vacSummary.view.js"></script>
-
-
+        <script src="js/views/vacList.view.js"></script>
+        <script src="js/views/admin.view.js"></script>
 
         <script src="js/router.js"></script>
         <script src="js/calendar.js"></script>
@@ -203,10 +228,12 @@
 
 
 <script id="template-year" type="text/template">
-	<div id="year-0" class="row-fluid"></div>
+	
+    <div id="year-0" class="row-fluid"></div>
     <div id="year-1" class="row-fluid"></div>
     <div id="year-2" class="row-fluid"></div>
     <button class="btn pull-left clear-selected">Wyczyść zaznaczone</button>
+    
 </script>
 		
 		
@@ -221,6 +248,20 @@
 </script>
 
 
+<script id="template-list" type="text/template">
+    
+<div id="lst">
+
+</div>
+<div id="en_lst">
+
+</div>
+    
+
+</script>
+
+
+
 <script id="template-request" type="text/template">
     
 <div id="req">
@@ -232,6 +273,16 @@
     
 
 </script>
+<script id="template-admin" type="text/template">
+    
+<div id="admin">
+    <button class="btn pull-right reject-selected">Odrzuć zaznaczone</button>
+    <button class="btn pull-right confirm-selected">Zatwierdź zaznaczone</button>
+
+</div>
+<div id="en_adm">
+
+</div>
 
 
 		

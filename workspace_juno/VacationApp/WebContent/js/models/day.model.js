@@ -19,7 +19,8 @@ App.Models.Day = Backbone.Model.extend({
 	
 		var dateStr = args.dateStr;
 		var mObj = moment(dateStr, this.get("dateFormat"));
-		
+
+			
 		this.set("dayOfMonth", mObj.date());
 		this.set("monthNumber", mObj.month());
 		this.set("yearNumber", mObj.year());
@@ -39,16 +40,17 @@ App.Models.Day = Backbone.Model.extend({
 	 //another solution is to not modify model during day selecting, but after send button pressing
 	 //the second solution would prevent delays during days selecting, because only DOM would be modified  
 	toggle: function(){
-
+		
 		var workingDay = !this.isWeekendOrHoliday();
 		if(workingDay){
 			var status = this.get("status");
 			var vacationDays = this.get("parent").get("userVac").get("vacationDays");			
 	    	var dates = _.pluck(vacationDays, "dateStr");
 	    	var idx = _.indexOf(dates, this.get("dateStr"));
-	    	if (idx == -1 && (status == "" || status == CONST.statusMarked) ) {
+	    	if (idx == -1 && (status == "" || status == CONST.statusMarked) || status == 4 ) {
 	    		var obj = {"dateStr": this.get("dateStr"), "status": this.get("status")};
 	    		vacationDays.push(obj);
+
 	    		console.log(obj.dateStr+" added");
 	    	}
 	    	else{
@@ -63,7 +65,8 @@ App.Models.Day = Backbone.Model.extend({
 			this.set("selected", !this.get("selected"));
 			var selected = this.get("selected");
 			
-			if (status == "" || status == CONST.statusMarked){
+			if (status == "" || status == CONST.statusMarked)
+			{	
 				if (selected){
 					this.set("status", CONST.statusMarked);
 				}
@@ -71,6 +74,7 @@ App.Models.Day = Backbone.Model.extend({
 					this.set("status", "");	
 				}	
 			}
+			
 			console.log("selected : "+ selected+" status : "+this.get("status"));
 			console.log(vacationDays);
 		}

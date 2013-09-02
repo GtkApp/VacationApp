@@ -10,8 +10,15 @@ $(function() {
 	});*/
     Backbone.history.start();
 
+
+
+
+
+
+
   $('#lang-pol').click(function(){
 
+	  console.log("click pl");
         if (document.location.hash.indexOf('/EN') == -1)    
             address = document.location.hash;
         else
@@ -24,7 +31,7 @@ $(function() {
 
 
     $('#lang-eng').click(function(){
-
+    	console.log("click en");
         if (document.location.hash.indexOf('/EN') == -1)    
 	    {
            if (document.location.hash == '')

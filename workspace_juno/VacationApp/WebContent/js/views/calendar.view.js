@@ -12,7 +12,7 @@ App.Views.Calendar = Backbone.View.extend({
 
     render: function() {
     	
-    	console.log('Calendar render');
+    	//console.log('Calendar render');
     	
 		var data = this.model.toJSON();
 		var html = this.template(data);

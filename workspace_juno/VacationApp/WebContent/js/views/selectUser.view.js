@@ -16,7 +16,7 @@ App.Views.SelectUser = Backbone.View.extend({
     },
 
     render: function() {
-		console.log('selectUser render');
+	//	console.log('selectUser render');
 		
 		var self = this;	
 		var data = this.collection.toJSON();
@@ -42,7 +42,16 @@ App.Views.SelectUser = Backbone.View.extend({
     	var userId = this.$("option:selected").val();
     	var user  = this.collection.get(userId);
     	user.set("selected", "selected");
-    	App.calendar.set("userId", user.get("id"));
+    	if(App.calendar)
+    	    App.calendar.set("userId", user.get("id"));
+    	if(App.admin)
+		    App.admin.set("userId", user.get("id"));
+
+
+
+
+
+    //	App.calendar.set("userId", user.get("id"));
     },
 
 });
