@@ -25,14 +25,30 @@ import org.jboss.resteasy.annotations.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VacationAppResource implements VacationAppInterface{
-	 @Resource(mappedName = "java:jboss/mail/VacApp_GMAIL")
-	 javax.mail.Session mailSession;
+	 /* @Resource(mappedName = "java:jboss/mail/VacApp_GMAIL")
+	 javax.mail.Session mailSession; */
 	 @Context javax.servlet.http.HttpServletRequest sr; 
 	/*@Autowired
 	private VacationDao vacationDAO;*/
 	
 	@Autowired
 	private VacationManager vacationManager;
+	
+	@Autowired
+	private EmailBroadcaster emailBROADCASTER;
+	
+	@GET
+	@Path("/Bogus/{emailRecipients}/{mailContent}")
+	public void sendEmail(/*@PathParam("emailRecipients")*/ String emailRecipients, /*@PathParam("mailContent")*/ String mailContent)
+	{
+		if(emailBROADCASTER != null)
+		{
+			System.out.println("EMAIL BROADCASTER IS WIRED IN !!!");
+			String mailContent1 = "Ala ma kota !!!";
+			String emailRecipients1 = "Boguslaw.Koseda@gtech.com";
+			emailBROADCASTER.sendEmail(new BroadcastedEmail("WarsawVacationRequests@gtech.com","Subj.",mailContent,emailRecipients.split(",")));
+		}
+	}
 	
 	@Override
 	@GET
@@ -44,6 +60,16 @@ public class VacationAppResource implements VacationAppInterface{
 		
 		VacationList vacationList = new VacationList();
 		vacationList.setVacations(vacationManager.manageGetVacationList(sr.getRemoteUser(), vacationSince, vacationUntil));
+		
+		/*
+		if(emailBROADCASTER != null)
+		{
+			System.out.println("EMAIL BROADCASTER IS WIRED IN !!!");
+			String mailContent = "Ala ma kota !!!";
+			String emailRecipients = "Boguslaw.Koseda@gtech.com";
+			emailBROADCASTER.sendEmail(new BroadcastedEmail("WarsawVacationRequests@gtech.com","Subj.",mailContent,emailRecipients.split(",")));
+		}
+		*/
 		
 		return vacationList;
 	}

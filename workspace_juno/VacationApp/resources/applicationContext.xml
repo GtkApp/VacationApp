@@ -11,6 +11,14 @@
           class="com.gtech.webservices.VacationAppResource"
           p:vacationDao-ref="vacationDao"/> -->
 
+    <!-- THREAD BIN -->
+    <bean id="emailBROADCASTER" class="com.gtech.webservices.EmailBroadcasterImpl"/>
+        
+    <!-- THE THREAD -->
+    <bean id="theEmailWatchdogThread" class="java.lang.Thread" init-method="start" destroy-method="interrupt">
+    <constructor-arg ref="emailBROADCASTER"/>
+	</bean>
+
     <bean id="vacationService"
           class="com.gtech.webservices.VacationAppResource"/>
 </beans>

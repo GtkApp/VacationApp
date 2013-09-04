@@ -5,48 +5,44 @@
 	<classpathentry kind="src" path="config"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/aopalliance-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/cglib-2.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-codec-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-dbcp-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-httpclient-3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/commons-pool-1.5.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/fluent-hc-4.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/hibernate3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/hibernate-validator-4.1.0.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/httpclient-4.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/httpclient-cache-4.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/httpcore-4.2.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/httpmime-4.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/javassist-3.9.0.GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/org.springframework.beans-3.0.4.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/org.springframework.jdbc-3.0.4.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/org.springframework.orm-3.0.4.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/org.springframework.transaction-3.0.4.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/postgresql-8.4-702.jdbc4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-aop-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-asm-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-beans-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-context-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-expression-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-tx-2.5.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vacationapp/Desktop/buildpath/spring-web-3.0.3.RELEASE.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/JBoss 7.1 Runtime">
-		<attributes>
-			<attribute name="owner.project.facets" value="jst.web"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/JBoss 7.1 Runtime"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-dbcp-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/commons-pool-1.5.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/fluent-hc-4.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/hibernate-validator-4.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/httpclient-4.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/httpclient-cache-4.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/httpcore-4.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/httpmime-4.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/org.springframework.beans-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/org.springframework.jdbc-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/org.springframework.orm-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/org.springframework.transaction-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/postgresql-8.4-702.jdbc4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-aop-3.0.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-asm-3.0.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-beans-3.0.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-context-3.0.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-expression-3.0.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-tx-2.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bkoseda/Desktop/VacationAppJars/buildpath/spring-web-3.0.3.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

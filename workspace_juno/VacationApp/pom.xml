@@ -1,0 +1,262 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<groupId>VacationApp</groupId>
+<artifactId>VacationApp</artifactId>
+<version>1</version>
+<packaging>war</packaging>
+<name>VacationApp</name>
+<description>Our VacationApp</description>
+
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+</properties>
+
+<dependencies>
+
+   <dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.4</version>
+   </dependency>
+
+   <dependency>
+	<groupId>antlr</groupId>
+	<artifactId>antlr</artifactId>
+	<version>2.7.6</version>
+   </dependency>
+
+   <dependency>
+	<groupId>aopalliance</groupId>
+	<artifactId>aopalliance</artifactId>
+	<version>1.0</version>
+   </dependency>
+
+   <dependency>
+	    <groupId>asm</groupId>
+	    <artifactId>asm-all</artifactId>
+	    <version>3.3</version>
+   </dependency>
+
+   <dependency>
+	    <groupId>org.bouncycastle</groupId>
+	    <artifactId>bcmail-jdk16</artifactId>
+	    <version>1.46</version>
+   </dependency>
+
+   <dependency>
+	    <groupId>org.bouncycastle</groupId>
+	    <artifactId>bcprov-jdk16</artifactId>
+	    <version>1.46</version>
+   </dependency>
+
+   <dependency>
+	    <groupId>cglib</groupId>
+	    <artifactId>cglib</artifactId>
+	    <version>2.2</version>
+    </dependency>
+
+   <dependency>
+	    <groupId>commons-codec</groupId>
+	    <artifactId>commons-codec</artifactId>
+	    <version>1.2</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>commons-collections</groupId>
+	    <artifactId>commons-collections</artifactId>
+	    <version>3.2.1</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>commons-dbcp</groupId>
+	    <artifactId>commons-dbcp</artifactId>
+	    <version>1.4</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>commons-httpclient</groupId>
+	    <artifactId>commons-httpclient</artifactId>
+	    <version>3.1</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>commons-logging</groupId>
+	    <artifactId>commons-logging</artifactId>
+	    <version>1.0.4</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>commons-pool</groupId>
+	    <artifactId>commons-pool</artifactId>
+	    <version>1.5.5</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>dom4j</groupId>
+	    <artifactId>dom4j</artifactId>
+	    <version>1.6.1</version>
+    </dependency>
+    
+    <dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-core</artifactId>
+	    <version>3.5.6-Final</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+	    <version>3.5.6-Final</version>
+    </dependency>
+
+    <dependency>
+	<groupId>org.hibernate.javax.persistence</groupId>
+	<artifactId>hibernate-jpa-2.0-api</artifactId>
+	<version>1.0.1.Final</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>javassist</groupId>
+	    <artifactId>javassist</artifactId>
+	    <version>3.9.0.GA</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>3.0.4.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-orm</artifactId>
+	    <version>3.0.4.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>postgresql</groupId>
+	    <artifactId>postgresql</artifactId>
+	    <version>8.4-702.jdbc4</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.jboss.resteasy</groupId>
+	    <artifactId>resteasy-crypto</artifactId>
+	    <version>2.3.2.Final</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.jboss.resteasy</groupId>
+	    <artifactId>resteasy-spring</artifactId>
+	    <version>2.3.2.Final</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-aop</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-asm</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-beans</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-core</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-expression</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-tx</artifactId>
+	    <version>2.5.6</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-web</artifactId>
+	    <version>3.0.3.RELEASE</version>
+    </dependency>
+
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+
+			<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency>
+
+</dependencies>
+  <build>
+	  <sourceDirectory>src</sourceDirectory>
+	  <resources>
+		  <resource>
+			  <directory>resources</directory>
+			  <excludes>
+				  <exclude>**/*.java</exclude>
+			  </excludes>
+		  </resource>
+		  <resource>
+			  <directory>config</directory>
+			  <excludes>
+				  <exclude>**/*.java</exclude>
+			  </excludes>
+		  </resource>
+	  </resources>
+	  <plugins>
+		  <plugin>
+			  <artifactId>maven-compiler-plugin</artifactId>
+			  <version>3.0</version>
+			  <configuration>
+				  <source>1.6</source>
+				  <target>1.6</target>
+			  </configuration>
+		  </plugin>
+		  <plugin>
+			  <artifactId>maven-war-plugin</artifactId>
+			  <version>2.3</version>
+			  <configuration>
+				  <warSourceDirectory>WebContent</warSourceDirectory>
+				  <warName>${project.artifactId}</warName>
+				  <failOnMissingWebXml>false</failOnMissingWebXml>
+				  <encoding>UTF-8</encoding>                        
+			  </configuration>
+		  </plugin>
+		  <plugin>
+			  <groupId>org.jboss.as.plugins</groupId>
+			  <artifactId>jboss-as-maven-plugin</artifactId>
+			  <configuration>
+				  <filename>${project.artifactId}.war</filename>
+		  	  </configuration>
+			  <version>7.1.1.Final</version>
+		  </plugin>
+	  </plugins>
+  </build>
+</project>

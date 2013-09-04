@@ -15,6 +15,11 @@ import javax.ws.rs.core.MediaType;
 public interface VacationAppInterface {
 	
 	@RolesAllowed({"admin", "user"})
+	@GET
+	@Path("/Bogus/{emailRecipients}/{mailContent}")
+	public void sendEmail(@PathParam("emailRecipients") String emailRecipients, @PathParam("mailContent") String mailContent);
+	
+	@RolesAllowed({"admin", "user"})
 	@GET() @Path("/VacationList/{vacationSince}/{vacationUntil}")
 	@Produces({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
 	public abstract VacationList getVacationList(@PathParam("vacationSince") String vacationSince, @PathParam("vacationUntil") String vacationUntil);
