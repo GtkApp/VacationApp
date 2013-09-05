@@ -65,6 +65,10 @@ App.Views.RightPanel = Backbone.View.extend({
         if (numberOfDays && vacationSince && vacationUntil)
         {
             
+    
+            console.log(this);
+
+
             App.vacation.set("idn", 0);         
             App.vacation.set("numberOfDays", numberOfDays);
             App.vacation.set("numberOfOutstandingDaysUsed", 0);
@@ -78,6 +82,8 @@ App.Views.RightPanel = Backbone.View.extend({
    
             App.vacation.url = "https://localhost:8443/VacationApp/Deeper/Rest/NewVacation";
             console.log("send !!!");
+            
+/*
             App.vacation.save({
             },
             {
@@ -88,7 +94,7 @@ App.Views.RightPanel = Backbone.View.extend({
                     console.log("save error");
                 }
             });
-        
+  */      
 		}
 		//this.model.saveData();
     },
@@ -98,10 +104,7 @@ App.Views.RightPanel = Backbone.View.extend({
         var userVac = new App.Models.UserVac(this.model.userVac);
         vacationDays = (userVac.get("vacationDays"));
 
-
-
-
-    	
+  	
 
         App.vacation = new App.Models.Vacation();
         App.vacation.set("idn", 11);

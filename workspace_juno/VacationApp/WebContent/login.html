@@ -6,11 +6,12 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title></title> 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
         <style>
             body {
                 padding-top: 60px;
@@ -23,8 +24,6 @@
             }
 
         </style>
- <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-
     </head>
     <body>
     
@@ -89,12 +88,16 @@ $('#btnSignIn').click(function() {
 
 
  
-    <h1>Login page for examples</h1>  
+    <h1></h1>  
     <form method="POST" action="j_security_check" >  
-     Username: <input type="text" name="j_username">  
-     Password: <input type="password" name="j_password">  
-       
-    <input type="submit" value="login" name="j_security_check">  
+     <fieldset>
+        <div class="clearfix">
+            <input type="text" placeholder="Username" name="j_username">  
+        </div>
+        <div class="clearfix">
+            <input type="password" placeholder="Password" name="j_password">  
+       </div>
+            <input class="btn primary" type="submit" value="login" name="j_security_check">  
     </form>  
 
 

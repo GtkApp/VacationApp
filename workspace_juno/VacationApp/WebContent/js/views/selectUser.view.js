@@ -22,13 +22,27 @@ App.Views.SelectUser = Backbone.View.extend({
 		var data = this.collection.toJSON();
 		var html = this.template(data);
 		this.$el.html( html );
+
+
+console.log("this.collection.models");
 		
+
+		
+		
+	//	App.users = new App.Collections.User(this.collection.model);
+
 		_.each(this.collection.models, function (user){
-			//var userOptionView = new App.Views.UserOption({ model: user });
-			//self.$( '#selUser' ).append( userOptionView.$el );
+
+
+			var userData = user.get("userList");
+
+			for (var i in userData)
+			{
+				var option = $("<option />").text(userData[i].userName).attr("value", userData[i].userIdn);
+				self.$( '#selUser' ).append( option );
+			}
+	
 			
-			var option = $("<option />").text(user.get("firstName")+ " "+user.get("lastName")).attr("value", user.get("id"));
-			self.$( '#selUser' ).append( option );
 		});
 
     	return this; 
@@ -40,12 +54,37 @@ App.Views.SelectUser = Backbone.View.extend({
     selectUser: function(){
     	console.log("select user ");
     	var userId = this.$("option:selected").val();
+    	var emploee;
+
+    	console.log("userId ="+userId);
+
+		_.each(this.collection.models, function (user){
+
+
+			var userData = user.get("userList");
+			emploee = userData[userId - 1];
+
+		});
+/*
     	var user  = this.collection.get(userId);
-    	user.set("selected", "selected");
+*/
+
+
+
+
+    	//user.set("selected", "selected");
+/*
     	if(App.calendar)
-    	    App.calendar.set("userId", user.get("id"));
+    	{
+    	 	console.log("App calendar");
+    	    App.calendar.set("userId", userId - 1);
+    	}
     	if(App.admin)
-		    App.admin.set("userId", user.get("id"));
+   */
+    	{
+		 	console.log("app admin");
+		    App.admin.set("userId", userId - 1);
+    	}
 
 
 

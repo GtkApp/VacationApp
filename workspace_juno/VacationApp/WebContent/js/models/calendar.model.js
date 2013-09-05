@@ -36,10 +36,12 @@ obiekcie jest użyty
 			this.fetchData();
 		});
 		
+		/*
 		this.on("change:userId", function(model, userId){
 			console.log("Changed userId from " + this.previous("userId") + " to " + userId);
 			this.fetchData();
 		});
+*/
 	},
 	
 	buildNewYear: function(yearNumber){

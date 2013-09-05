@@ -96,6 +96,7 @@ App.Router = Backbone.Router.extend({
 		App.calendarView = new App.Views.Calendar({model: App.calendar, el:'#calendar'});
 		
 		App.users = new App.Collections.User();
+	/*
 		App.selectUserView = new App.Views.SelectUser({collection: App.users, el:'#selectUser'});
 		App.users.fetch({
 			success: function(model,response,options){
@@ -107,11 +108,28 @@ App.Router = Backbone.Router.extend({
 				console.log(options);
 			}//,async:false
 		});
-		
+	*/	
 		App.rightPanel = new App.Models.RightPanel();
 		App.rightPanelView = new App.Views.RightPanel({model: App.calendar, el:'#rightPanel'});
 
 		
+		App.vacSummary = new App.Collections.VacSummary();
+				App.vacSummary.fetch({
+				success: function(model,response,options){
+					console.log(response);
+
+				},
+				error: function(model,xhr,options){
+					console.log(model);
+					console.log(xhr);
+					console.log(options);
+				}
+			});
+		
+		console.log("Hi "+App.vacSummary.get("daysOnDemand"));
+		console.log(App.vacSummary);
+
+
 		App.calendar.fetch({
 			success: function(model,response,options){
 
@@ -227,6 +245,8 @@ App.Router = Backbone.Router.extend({
 		App.selectUserView = new App.Views.SelectUser({collection: App.users, el:'#selectUserAdm'});
 		App.users.fetch({
 			success: function(model,response,options){
+				console.log("users read success");
+				console.log(response);
 			},
 			error: function(model,xhr,options){
 				console.log('error'+model+' xhr='+xhr+' options='+options);
@@ -248,6 +268,8 @@ App.Router = Backbone.Router.extend({
 		App.selectUserView = new App.Views.SelectUser({collection: App.users, el:'#selectUserAdm'});
 		App.users.fetch({
 			success: function(model,response,options){
+				console.log("users read success");
+				console.log(response);
 			},
 			error: function(model,xhr,options){
 				console.log('error'+model+' xhr='+xhr+' options='+options);
