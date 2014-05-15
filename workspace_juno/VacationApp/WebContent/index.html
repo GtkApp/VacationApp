@@ -45,7 +45,6 @@
                         <span class="icon-bar"></span>
                     </a>
 
-
                     <a class="brand" id="appName" href="#">Aplikacja urlopowa</a>
                     <div class="nav-collapse collapse">
                     </div><!--/.nav-collapse -->
@@ -64,23 +63,28 @@
             <ul class="nav nav-tabs">
                 <li class="active" id="li_Cal"><a href="#tab1" id="cal-but"> Kalendarz</a></li>
                 <li id="li_Req"><a href="#tab2" id="Reqs" >Wnioski</a></li>
-                <li id="li_Adm"><a href="#tab3" id="Adm" >Zatwierdzanie</a></li>
-
+                <li id="li_Avail"><a href="#tab4" id="Avail" >Dostępny urlop</a></li>
+                <li id="li_Adm" class="hide"><a href="#tab3" id="Adm" >Zarządzanie wnioskami</a></li>
+                <li id="li_AvUsers" class="hide"><a href="#tab5" id="AvUsers" >Dostępni pracownicy</a></li>
             </ul>
             <div class="tab-content">
                 <div  id="tab1">
                 	
                     <div class="container">
-                        <div class="row" style="background-color: #fff">
-							
-							<div class="span10">
-		                      <!-- 	<div id="selectUser" style="background-color: #fff; padding-bottom:2em;"></div>-->
+                        <div class="row" style="background-color: #fff">	
+							<div class="span9">
 			                    <div id="calendar"  style="background-color: #fff">
 		                            calendar
-		                        </div>
-		                        
+		                        </div>  
 							</div>
-                            <div id='rightPanel' class="span2" style="background-color: #fff" >
+                            <div class="span3">
+                            Opcje użytkownika
+                            <div id="selectVacTypeAdm" style="background-color: #fff; padding-bottom:0em;"></div>
+                            </div>
+                            <div id='freeD'  style="background-color: #fff" >
+                                Sidebar content
+                            </div>
+                            <div id='rightPanel'  style="background-color: #fff" >
                                 Sidebar content
                             </div>
                         </div>
@@ -90,14 +94,18 @@
                 <div  id="tab2">
                     <div class="container">
                         <div class="row">
-<!--                            <div id="selectUser" style="background-color: #fff; padding-bottom:2em;"></div>-->
+                            <div id="list" class="span12" style="background-color: #eeeeee"></div>  
+                           
+                        </div>
+                    </div>
+                </div>
+                <div  id="tab4">
+                    <div class="container">
+                        <div class="row">
                             <div id="list" class="span12" style="background-color: #eeeeee"></div>  
                             <div id="request" class="span12" style="background-color: #eeeeee">
                                 Body content
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -105,11 +113,20 @@
                     <div class="container">
                         <div class="row" style="background-color: #fff">
                           <div class="span10">
-                            <div id="selectUserAdm" style="background-color: #fff; padding-bottom:2em;"></div>
-                            <div id="admin1" style="background-color: #ffeeee; padding-bottom:2em;">
+                            <div id="selectUserAdm" style="background-color: #fff; padding-bottom:0em;"></div>
+                            <div id="selectReqTypeAdm" style="background-color: #fff; padding-bottom:0em;"></div>
+                            <div id="admin1" style="background-color: #ffeeee; padding-bottom:1em;">
                                 Body content
                             </div>
                           </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab5">
+                    <div class="container">
+                        <div class="row">
+                            <div id="listAvail" class="span12" style="background-color: #eeeeee"></div>  
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,6 +169,7 @@
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/moment.min.js"></script>
         <script src="js/vendor/date.js"></script>
+        <script src="js/vendor/jquery.videoBG.js"></script>
 
         
 
@@ -169,15 +187,16 @@
        <script src="js/models/calendar.model.js"></script>
         <script src="js/models/rightPanel.model.js"></script>
         <script src="js/models/request.model.js"></script>
-
         <script src="js/collections/vacSummary.collection.js"></script>
-
         <script src="js/models/listVac.model.js"></script>
         <script src="js/collections/listVac.collection.js"></script>
         <script src="js/models/admin.model.js"></script>
-
-        <script src="js/views/button.view.js"></script>
+        <script src="js/models/freeDay.model.js"></script>
+        <script src="js/models/availUser.model.js"></script>
+        <script src="js/collections/availUser.collection.js"></script>
         <script src="js/views/selectUser.view.js"></script>
+        <script src="js/views/selectReqType.view.js"></script>
+        <script src="js/views/selectVacType.view.js"></script>
         <script src="js/views/day.view.js"></script>
         <script src="js/views/month.view.js"></script>
         <script src="js/views/year.view.js"></script>
@@ -186,18 +205,50 @@
         <script src="js/views/vacSummary.view.js"></script>
         <script src="js/views/vacList.view.js"></script>
         <script src="js/views/admin.view.js"></script>
-
+        <script src="js/views/freeDay.view.js"></script>
+        <script src="js/views/userAvail.view.js"></script>
         <script src="js/router.js"></script>
         <script src="js/calendar.js"></script>
         <script src="js/main.js"></script>
 
 
+    <script id="template-selectVacType" type="text/template">
+        <select id="selVacType"/>
+    </script>   
+    <script id="template-vacTypeOption" type="text/template">
+        <%=vacType%> 
+    </script>  
+
+
+    <script id="template-freeDay" type="text/template">
+        
+    </script>  
+
+
+
+
+
 <script id="template-rightPanel" type="text/template">
-	<p>Opcje użytkownika</p>
-	<p><button class="btn send-vac">Wyślij wniosek</button></p>
+	
+    <p><button class="btn send-vac">Wyślij wniosek</button></p>
 	<p><button class="btn cancel-vac">Anuluj urlop</button></p>
-	<p>Komentarz<textarea rows="3" class="field span2"></textarea></p>
+	
+    <p>Komentarz</p>
+    <textarea rows="3" class="field span2"></textarea>
+
+
+    <div class="legend">
+    <button class="btn acceptedClass" id="leg"></button> Zaakceptowane <br>
+    <button class="btn rejectedClass" id="leg"></button> Odrzucone <br>
+    <button class="btn canceledClass" id="leg"></button> Anulowane <br>
+    <button class="btn acceptWaitClass" id="leg"></button> Oczekujące na akceptację <br>
+    <button class="btn cancelWaitClass" id="leg"></button> Oczekujące na anulowanie <br>
+    <button class="btn weekendClass" id="leg"></button> Dni wolne <br>
+    </div>
 </script>
+
+
+
 
 <script id="template-selectUser" type="text/template">
 	<select id="selUser"/>
@@ -205,6 +256,16 @@
 <script id="template-userOption" type="text/template">
 	<%=userName%> 
 </script>	
+
+
+<script id="template-selectReqType" type="text/template">
+    <select id="selReqType"/>
+</script>   
+<script id="template-reqTypeOption" type="text/template">
+    <%=reqType%> 
+</script>   
+
+
 
 
 <script id="template-day" type="text/template">
@@ -233,14 +294,15 @@
     <div id="year-1" class="row-fluid"></div>
     <div id="year-2" class="row-fluid"></div>
     <button class="btn pull-left clear-selected">Wyczyść zaznaczone</button>
-    
+
 </script>
 		
 		
 <script id="template-calendar" type="text/template">
-    <button class="btn pull-left prev-year">Poprzedni</button>
-    <button class="btn pull-right next-year">Następny</button>
-    <h1 class="text-center">Urlopy <%=yearNumber%></h1>
+    <button class="btn pull-left prev-yearc">Poprzedni</button>
+    <button class="btn pull-right next-yearc">Następny</button>
+
+    <h2 class="text-center">Urlopy <%=yearNumber%></h1>
     
     <div id="year">
 
@@ -249,7 +311,13 @@
 
 
 <script id="template-list" type="text/template">
+        <button class="btn pull-left prev-year">Poprzedni</button>
+    <button class="btn pull-right next-year">Następny</button>
+ <h2 class="text-center">Urlopy <%=year%></h1>
+
     
+
+
 <div id="lst">
 
 </div>
@@ -263,26 +331,46 @@
 
 
 <script id="template-request" type="text/template">
-    
-<div id="req">
 
+<div id="req">
 </div>
 <div id="en_req">
-
 </div>
-    
-
 </script>
+
+<script id="template-availab" type="text/template">
+<div id="Avail">
+</div>
+<div id="en_Avail">
+</div>
+</script>
+
+<script id="template-AvUs" type="text/template">
+<div id="Avus">
+</div>
+<div id="en_Avail">
+</div>
+</script>
+
+
+
 <script id="template-admin" type="text/template">
+    <button class="btn pull-left prev-year">Poprzedni</button>
+    <button class="btn pull-right next-year">Następny</button>
     
+    <h2 class="text-center">Urlopy <%=year%></h1>
 <div id="admin">
-    <button class="btn pull-right reject-selected">Odrzuć zaznaczone</button>
-    <button class="btn pull-right confirm-selected">Zatwierdź zaznaczone</button>
+ 
 
 </div>
 <div id="en_adm">
 
 </div>
+</script>
+
+
+
+
 
 
 		

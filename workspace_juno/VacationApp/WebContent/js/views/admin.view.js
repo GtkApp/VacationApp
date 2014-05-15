@@ -16,8 +16,8 @@ App.Views.Admin = Backbone.View.extend({
     },
 
     render: function() {
-    	console.log("Admin view render");
-    	console.log(this);
+      //  	console.log(this);
+
 		var self = this;	
 
 		var data = this.model.toJSON();
@@ -26,136 +26,153 @@ App.Views.Admin = Backbone.View.extend({
 		//lang = $.cookie("language");
 		this.$el.html(html);
 
-		var request = this.Create2DArray(this.model.get("vacationRequests").length);
-		
-		// the following scary loop formats dates into string 'A,B,C-E,F etc...' with A-C ranges if there are more than two consecutive dates
-		for(ii = 0; ii < this.model.get("vacationRequests").length; ii++) {
-		    request[ii][0] = this.model.get("vacationRequests")[ii].vacationType;
-		    request[ii][1] = JSON.stringify(this.model.get("vacationRequests")[ii].vacationDays.length);
-		
-		    // get first date
-		    request[ii][2] = this.model.get("vacationRequests")[ii].vacationDays[0].dateStr;
-		    latestWritten = request[ii][2];
-		    // format consecutive dates
-		    for(jj = 1; jj < this.model.get("vacationRequests")[ii].vacationDays.length; jj++) {
-				//console.log("1:" + this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr);
-				//console.log("2:" + latestWritten);
-				//console.log("3:" + this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr);
-				//console.log(moment(this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr, "YYYY-MM-DD").diff(moment(this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr, "YYYY-MM-DD"), 'days'));
-			    if(moment(this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr, "YYYY-MM-DD").diff(moment(this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr, "YYYY-MM-DD"), 'days') > 1)
-			    {
-			        if(this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr == latestWritten)
-			            request[ii][2] += ', ' + this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr;
-			        else
-			        {
-			            if(moment(this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr, "YYYY-MM-DD").diff(moment(latestWritten,"YYYY-MM-DD"),'days') == 1)
-			                request[ii][2] += ', ';
-			            else
-			                request[ii][2] += ' - ';
-			            request[ii][2] += this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr + ', ' + this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr;
-		            }
-			        latestWritten = this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr;
-		        }
-	    	}
-	    	jj--;
-	        if(latestWritten != this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr)
-	        {
-		        if(this.model.get("vacationRequests")[ii].vacationDays[jj-1].dateStr == latestWritten)
-		            request[ii][2] += ', ' + this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr;
-		        else
-		            request[ii][2] += ' - ' + this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr;
-		        latestWritten = this.model.get("vacationRequests")[ii].vacationDays[jj].dateStr;
-	        }
-	    }
 
-		
+		var vacType = this.model.get("vacTypeId");
+
+
+		var Vacation = this.model.get("vacations");
+
 		var table = $("<table style='width:100%;'/>");
 		var thead = $('<thead />');
 		var tbody = $('<tbody />');
 		var trow = $('<tr />');
 		var tcol = $('<td />');
 
-		var headers = [];
-		var	reqType = [];
+		var order = 0;
 
-		if (this.options.lang == 2)
-		{
-			headers.push('#', 'Vacation Type', 'Days', 'Detailed Period', 'Select');
-            reqType.push('relax','free', 'celebration', 'hours in lieu', 'prison', 'maternity', 'on demand', 'kid protection', 'job search', 'other');	
-            $("button.confirm-selected").html("Confirm Selected");
-            $("button.reject-selected").html("Reject Selected");
-        }
-		else
-		{
-			headers.push('#', 'Rodzaj urlopu', 'Liczba dni', 'Szczegółowy harmonogram', 'Wybierz');
-			reqType.push('wypoczynkowy','bezpłatny', 'okolicznościowy', 'odbiór godzin','wychowawczy', 'macierzyński', 'na żądanie', 'Opieka nad dzieckiem', 'Zwolnienie na poszukiwanie pracy', 'Inne nieobecności');	
-		}
+    	for (var i in Vacation )
+    	{
+    		if (vacType == 0 && Vacation[i].statusOfVacationRequest != 'WAITING_FOR_ACCEPTATION'
+    			&& Vacation[i].statusOfVacationRequest != 'WAITING_FOR_CANCELLATION'
+    		 )
+    		{
+     			continue;
+    		}
+    		
+    		var row = $('<tr />');
+			var col = $('<td>'+Vacation[i].idn+'</td>');
+			col.appendTo(row);
+			
+			var d = new Date(Vacation[i].vacationSince); // The 0 there is the key, which sets the date to the epoch
+			col = $('<td>'+d.toString("yyyy-MM-dd")+'</td>').appendTo(row);
+			col.appendTo(row);
+			
+			d =  new Date(Vacation[i].vacationUntil);
+			col = $('<td>'+d.toString("yyyy-MM-dd")+'</td>');
+			col.appendTo(row);
+			col = $('<td>'+Vacation[i].numberOfDays+'</td>');
+			col.appendTo(row);
+			col = $('<td>'+Vacation[i].typeOfVacation+'</td>');
+			col.appendTo(row);
+			col = $('<td>'+Vacation[i].statusOfVacationRequest+'</td>');
+			col.appendTo(row);
+			if (Vacation[i].statusOfVacationRequest == 'WAITING_FOR_ACCEPTATION')
+			{
+				col = $('<td><button id='+i+' class="btn change" name="acc">'+"Zatwierdz urlop"+'</button></td>');
+				col.appendTo(row);
+				col = $('<td><button id='+i+' class="btn change" name="rej">'+"Odrzuc wniosek"+'</button></td>');
+				col.appendTo(row);
+			}	
+			else if (Vacation[i].statusOfVacationRequest == 'WAITING_FOR_CANCELLATION')
+			{
+				col = $('<td><button id='+i+' class="btn change" name="can">'+"Anuluj urlop"+'</button></td>');
+				col.appendTo(row);
+				col = $('<td><button id='+i+' class="btn change" name="rej">'+"Odrzuc wniosek"+'</button></td>');
+				col.appendTo(row);
+			}
+			if (Vacation[i].statusOfVacationRequest == 'ACCEPTED')
+			{
+				col = $('<td><button id='+i+' class="btn change" name="rej">'+"Odrzuc wniosek"+'</button></td>');
+				col.appendTo(row);
+				col = $('<td></td>');
+				col.appendTo(row);
+			}
 
-		for (i = 0; i < headers.length; i++)
-		{
-			var thText = $('<td>'+headers[i]+'</td>');
-			thText.appendTo(trow);
-		}
-		trow.appendTo(thead);
+			else
+			{
+				col = $('<td></td>');
+				col.appendTo(row);
+				col = $('<td></td>');
+				col.appendTo(row);
+
+			}
 		
-		thead.appendTo(table);
 
-		
-		for (i = 0; i < request.length; i++)
-		{
-			var row = $('<tr />');
-			var col = $('<td>'+(i+1)+'</td>');
-			col.appendTo(row);
-			var col = $('<td>'+reqType[request[i][0]]+'</td>');
-			col.appendTo(row);
-			// Num of days
-    		var col = $('<td>'+request[i][1]+'</td>');
-			col.appendTo(row);
-			// Detailed days, this only column has flexible width
-    		var col = $('<td style="text-align: left; width: auto">'+request[i][2]+'</td>');
-			col.appendTo(row);
-			// "select" switch
-    		var col = $('<td><input type="checkbox" id="sel-'+i+'"></td>');
-			col.appendTo(row);
-			//row.attr("id", "req-table-row");
+
 			row.appendTo(tbody);		
-		}
-		
+			order++;
+
+    	}
+
 		tbody.appendTo(table);
-		var tbody = $('<tbody />');
-
+	//	var tbody = $('<tbody />');
 		table.attr("id", "req-table");		
-
 		this.$el.append( table );
-
+		//self.$( '#admin' ).append( table );
+    	
     	return this; 
-    },
+
+},
+
+   events:{
+      "click button.change":"buttonAction",
+    	"click button.next-year": "gotoNextYear",
+    	"click button.prev-year": "gotoPrevYear",
+   },
 
 
-    events: {
-    	"click button.reject-selected": 'rejectSelected',
-    	"click button.confirm-selected": 'confirmSelected'
-    },
-    
-    rejectSelected: function() {
-    },
-    
-    
-    confirmSelected: function() {
-    },
-    
+   buttonAction: function(e)
+   {
+   		console.log("button pushed");
+   		   	var clickedEl = $(e.currentTarget);
+  			var id = clickedEl.attr("id");
+  			var name = clickedEl.attr("name");
+  			console.log(clickedEl);
 
-/*
-    langPol: function(){
-    	console.log("click");
-    	this.render(1);
+  			console.log("id = "+id);
+  		 	Vacation = this.model.get("vacations");
+  		 	console.log(Vacation[id]);
+
+  		 	AccVacation = new App.Models.Vacation(Vacation[id]);
+
+
+  			switch(name)
+  			{
+  				case 'acc':
+ 				  		
+					AccVacation.set("statusOfVacationRequest", "ACCEPTED");
+  					break;
+  				case 'rej':
+					AccVacation.set("statusOfVacationRequest", "REJECTED");
+  					console.log("rejected!");
+  					break;
+  				case 'can':
+					AccVacation.set("statusOfVacationRequest", "CANCELLED");
+  					console.log("cancelled");
+  					break;
+
+  			}
+  			AccVacation.existData();
+
+   },
+
+
+
+        gotoNextYear: function() {
+    	
+		var yearNumber = this.model.get("year");
+		this.model.set("year", moment().year(yearNumber).add('y',1).year());
     },
-    
-    langEng: function(){
-    	this.render(2);
-    	//console.log(this.model.toJSON());
-    },
-*/
+	
+	
+	gotoPrevYear: function() {
+
+		var yearNumber = this.model.get("year");
+		this.model.set("year", moment().year(yearNumber).subtract('y',1).year());
+		
+	},
+
+
 
  Create2DArray: function(rows) {
   var arr = [];

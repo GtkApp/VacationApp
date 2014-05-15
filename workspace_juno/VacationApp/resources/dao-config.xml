@@ -12,4 +12,5 @@
 	<bean id="vacationDao" class="com.gtech.webservices.VacationDaoImpl"/>
 	<bean id="vacationSummaryDao" class="com.gtech.webservices.VacationSummaryDaoImpl"/>
 	<bean id="vacationAppUserDao" class="com.gtech.webservices.VAppUserDaoImpl"/>
+	<bean id="escalationListDao" class="com.gtech.webservices.EscalationListDaoImpl"/>
 </beans>

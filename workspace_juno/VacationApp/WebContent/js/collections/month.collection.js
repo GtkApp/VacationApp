@@ -18,7 +18,9 @@ App.Collections.Month = Backbone.Collection.extend({
 	
 	resetStatus: function(){
 		this.each(function(month){
+			//to chodzi b. wolno
 			month.get("dayCollection").resetStatus();
+			console.log("day collection reset");
 		});
 	}
 

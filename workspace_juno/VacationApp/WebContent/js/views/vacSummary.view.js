@@ -10,7 +10,7 @@ App.Views.VacSummary = Backbone.View.extend({
 		//this.collection.bind('change', this.render);
 		this.collection.bind('reset', this.render); // the event fires when the collection has finished receiving data from the server
 		
-		var text = $('#template-request').text(); 
+		var text = $('#template-availab').text(); 
 		this.template = _.template( text ); 
 		this.render();
     },
@@ -119,7 +119,7 @@ App.Views.VacSummary = Backbone.View.extend({
 
 		table.attr("id", "req-table");		
 
-		self.$( '#req' ).append( table );
+		self.$( '#Avail' ).append( table );
 
     	return this; 
     },

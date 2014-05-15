@@ -51,9 +51,12 @@ var m1 = moment();
         var data = this.model.toJSON();
         this.model.toggle();
 
+
 var m2 = moment();
 console.log("m2.diff(m1)="+m2.diff(m1));
-  
+
+
+ // app.freeDay.set("daysAvail", app.freeDay.get("daysAvail") - 1);
     },
     
 	//return css class name for given day status 

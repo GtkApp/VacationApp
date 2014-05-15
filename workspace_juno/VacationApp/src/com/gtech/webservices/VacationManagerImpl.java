@@ -22,6 +22,12 @@ public class VacationManagerImpl implements VacationManager {
 	
 	@Autowired
 	private VAppUserDao vacationAppUserDao;
+
+	@Autowired
+	private EscalationListDao escalatioListDao;	
+	
+	@Autowired
+	private EmailBroadcaster emailBROADCASTER;
 	
 	public VacationManagerImpl()
 	{
@@ -96,7 +102,7 @@ public class VacationManagerImpl implements VacationManager {
 	
     public VacationSummary manageGetVacationSummary(String loggedUser)
     {
-        //vacationSummaryDao.saveSummary(vacationSummaryDao.fakeVacationSummary());
+        //vacationSummaryDao.saveSummary(vacationSummaryDao.fakeVacationSummary(loggedUser));
 		//return vacationDAO.fakeVacationSummary();
     	//System.out.println(String.format("manageGetVacationSummary"));
 
@@ -160,6 +166,60 @@ public class VacationManagerImpl implements VacationManager {
 		System.out.println(String.format("manageGetVacationList"));
 		return vacationDao.getVacationList(user.getUserName(), vSince, vUntil);
     }    
+
+    private void sendMailNotifivation(String mailSubject, String mailContent, VAppUser user)
+    {
+		if(emailBROADCASTER != null)
+		{
+			/* "WarsawVacationRequests@gtech.com" */
+			
+			EscalationList escList = escalatioListDao.get();
+			
+			String emailRecipients = user.getEmail();
+			emailBROADCASTER.sendEmail(new BroadcastedEmail(escList.getSenderMail() ,mailSubject , mailContent, emailRecipients));
+			
+			if(user.getUserSupervisorIdn()!=0)
+			{
+				VAppUser userSuper =  vacationAppUserDao.get(user.getUserSupervisorIdn());			
+				emailBROADCASTER.sendEmail(new BroadcastedEmail(escList.getSenderMail(),mailSubject , mailContent, userSuper.getEmail()));
+			}
+			
+			if(user.getSupervisorReplacementIdn()!=0)
+			{
+				VAppUser userSuper =  vacationAppUserDao.get(user.getSupervisorReplacementIdn());			
+				emailBROADCASTER.sendEmail(new BroadcastedEmail(escList.getSenderMail(),mailSubject , mailContent, userSuper.getEmail()));
+			}
+			
+			if(escList.getNameIdn1() != 0)
+			{
+				emailBROADCASTER.sendEmail(new BroadcastedEmail(escList.getSenderMail(),mailSubject , mailContent, escList.getMail1()));
+			}
+			if(escList.getNameIdn2() != 0)
+			{
+				emailBROADCASTER.sendEmail(new BroadcastedEmail(escList.getSenderMail(),mailSubject , mailContent, escList.getMail2()));
+			}
+			if(escList.getNameIdn3() != 0)
+			{
+				emailBROADCASTER.sendEmail(new BroadcastedEmail(escList.getSenderMail(),mailSubject , mailContent, escList.getMail3()));
+			}			
+			
+		}else
+			System.out.println("ERROR. Could not send an email");   	
+    	
+    }
+    
+    private String prepareMailMessage(String subject, Vacation vacationRequest)
+    {
+    	String msgBody="";
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	
+    	msgBody = "User " + subject + " from " + format.format(vacationRequest.getVacationSince().getTime())  
+    			+ " until " + format.format(vacationRequest.getVacationUntil().getTime()) + " " + "Number of days " + vacationRequest.getNumberOfDays()
+    			+ " " + ". Type of vacation " +  vacationRequest.getTypeOfVacation()
+    			+ " " + ". Status of vacation" + vacationRequest.getStatusOfVacationRequest() + ".";
+    	
+    	return msgBody;
+    }
     
 	public Vacation manageNewVacationRequest(Vacation vacationRequest, String loggedUser)
 	{
@@ -174,9 +234,11 @@ public class VacationManagerImpl implements VacationManager {
 		
 		vacationSummaryDao.updateSummary(vacationRequest, vacationSum, UpdateType.UPDATE_DECREASE);
 		
-		//TODO
-		//getEscalationList(user);
-		
+		VAppUser user =  vacationAppUserDao.getByName(loggedUser);
+		String mailSubject = user.getUserName() + " new vacation request";
+		String mailContent = prepareMailMessage(mailSubject,  vacationRequest); 
+		sendMailNotifivation(mailSubject, mailContent, user);
+
 		/* Return requested vacation with updated id*/
 		return vacationRequest; 
 		
@@ -196,11 +258,38 @@ public class VacationManagerImpl implements VacationManager {
 		if(updateVacationSummaryAfterVacationUpdate(vacationUpdated)== true)
 			vacationSummaryDao.updateSummary(vacationUpdated, vacationSum, UpdateType.UPDATE_INCREASE);
 		
-		//TODO
-		//getEscalationList(user);
+		VAppUser user =  vacationAppUserDao.getByName(loggedUser);
+		String mailSubject = user.getUserName() + " vacation request update";
+		String mailContent = prepareMailMessage(mailSubject,  vacationRequest); 
+		
+		sendMailNotifivation(mailSubject, mailContent, user);
 				
 		return vacationUpdated;
 	}
+
+	public Vacation updateExistingVacation(Vacation vacationRequest, int userId)
+	{
+		VAppUser user = vacationAppUserDao.get(userId);
+		VacationSummary vacationSum = vacationSummaryDao.getVacationSummary(user.getUserName());
+		
+		Vacation currentVacationRequest = vacationDao.get(vacationRequest.getIdn());
+		
+		if(isUpdatePossible(currentVacationRequest, vacationRequest) == false)
+			throw new NotFoundException("It is not possible to update vacation");
+		
+		Vacation vacationUpdated =  vacationDao.update(vacationRequest);
+		
+		if(updateVacationSummaryAfterVacationUpdate(vacationUpdated)== true)
+			vacationSummaryDao.updateSummary(vacationUpdated, vacationSum, UpdateType.UPDATE_INCREASE);
+		
+		String mailSubject = user.getUserName() + " vacation request update";
+		String mailContent = prepareMailMessage(mailSubject,  vacationRequest); 
+		
+		sendMailNotifivation(mailSubject, mailContent, user);
+				
+		return vacationUpdated;
+	}
+	
 	
 	public  List<VAppUser> manageGetUserList(String loggedUser)
 	{

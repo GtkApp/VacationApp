@@ -18,64 +18,60 @@ public class EscalationList {
 		this.id = id;
 	}
 	
-	private String userName;
-	private String userMail;
+	private String senderMail;
 	
-	private String nameOfSupervisor1;
-	private String nameOfSupervisor2;
-	private String nameOfSupervisor3;
+	private int nameIdn1;
+	private int nameIdn2;
+	private int nameIdn3;
+
+	private String mail1;
+	private String mail2;
+	private String mail3;
 	
-	private String mailOfSupervisor1;
-	private String mailOfSupervisor2;
-	private String mailOfSupervisor3;
+	public String getSenderMail() {
+		return senderMail;
+	}
+	public void setSenderMail(String senderMail) {
+		this.senderMail = senderMail;
+	}
 	
-	public String getUserName() {
-		return userName;
+	public int getNameIdn1() {
+		return nameIdn1;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setNameIdn1(int nameIdn1) {
+		this.nameIdn1 = nameIdn1;
 	}
-	public String getUserMail() {
-		return userMail;
+	public int getNameIdn2() {
+		return nameIdn2;
 	}
-	public void setUserMail(String userMail) {
-		this.userMail = userMail;
+	public void setNameIdn2(int nameIdn2) {
+		this.nameIdn2 = nameIdn2;
 	}
-	public String getNameOfSupervisor1() {
-		return nameOfSupervisor1;
+	public int getNameIdn3() {
+		return nameIdn3;
 	}
-	public void setNameOfSupervisor1(String nameOfSupervisor1) {
-		this.nameOfSupervisor1 = nameOfSupervisor1;
+	public void setNameIdn3(int nameIdn3) {
+		this.nameIdn3 = nameIdn3;
 	}
-	public String getNameOfSupervisor2() {
-		return nameOfSupervisor2;
+	public String getMail1() {
+		return mail1;
 	}
-	public void setNameOfSupervisor2(String nameOfSupervisor2) {
-		this.nameOfSupervisor2 = nameOfSupervisor2;
+	public void setMail1(String mail1) {
+		this.mail1 = mail1;
 	}
-	public String getNameOfSupervisor3() {
-		return nameOfSupervisor3;
+	public String getMail2() {
+		return mail2;
 	}
-	public void setNameOfSupervisor3(String nameOfSupervisor3) {
-		this.nameOfSupervisor3 = nameOfSupervisor3;
+	public void setMail2(String mail2) {
+		this.mail2 = mail2;
 	}
-	public String getMailOfSupervisor1() {
-		return mailOfSupervisor1;
+	public String getMail3() {
+		return mail3;
 	}
-	public void setMailOfSupervisor1(String mailOfSupervisor1) {
-		this.mailOfSupervisor1 = mailOfSupervisor1;
+	public void setMail3(String mail3) {
+		this.mail3 = mail3;
 	}
-	public String getMailOfSupervisor2() {
-		return mailOfSupervisor2;
-	}
-	public void setMailOfSupervisor2(String mailOfSupervisor2) {
-		this.mailOfSupervisor2 = mailOfSupervisor2;
-	}
-	public String getMailOfSupervisor3() {
-		return mailOfSupervisor3;
-	}
-	public void setMailOfSupervisor3(String mailOfSupervisor3) {
-		this.mailOfSupervisor3 = mailOfSupervisor3;
-	}
+
+
 	
 }

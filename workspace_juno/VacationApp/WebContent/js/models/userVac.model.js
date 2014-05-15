@@ -6,11 +6,7 @@ App.Models.UserVac = Backbone.Model.extend({
         userId:"",
         vacationDays: [], //[{dateStr: 2013-12-01, status: 1}, ...]
         yearNumber: "",
-        
-/*
-        vacationSince:"",
-        vacationUntil: ""
-        */
+
 	},
 
 	initialize: function(){

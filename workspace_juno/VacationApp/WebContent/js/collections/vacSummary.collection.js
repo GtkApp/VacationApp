@@ -5,6 +5,9 @@ App.Collections.VacSummary = Backbone.Collection.extend({
 
 
 
+		
+
+
 
 
 

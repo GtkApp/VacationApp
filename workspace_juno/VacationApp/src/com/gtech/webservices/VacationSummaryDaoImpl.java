@@ -30,10 +30,10 @@ public class VacationSummaryDaoImpl implements VacationSummaryDao{
 	}
 
 	@Override
-	public VacationSummary fakeVacationSummary() {
+	public VacationSummary fakeVacationSummary(String user) {
         VacationSummary vacationSum = new VacationSummary();
         
-        vacationSum.setName("gbielanski");
+        vacationSum.setName(user);
         vacationSum.setDaysAfterTheBirth(11);
         vacationSum.setDaysChildCare(12);
         vacationSum.setDaysJobSearch(13);

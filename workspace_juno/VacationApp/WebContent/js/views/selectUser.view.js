@@ -12,7 +12,11 @@ App.Views.SelectUser = Backbone.View.extend({
 		var text = $('#template-selectUser').text(); 
 		this.template = _.template( text ); 
 
+
+
+
 		this.render();
+		App.admin.set("userId", 0);
     },
 
     render: function() {
@@ -24,10 +28,7 @@ App.Views.SelectUser = Backbone.View.extend({
 		this.$el.html( html );
 
 
-console.log("this.collection.models");
-		
 
-		
 		
 	//	App.users = new App.Collections.User(this.collection.model);
 

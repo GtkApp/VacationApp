@@ -11,7 +11,7 @@ public abstract interface VacationSummaryDao {
 	
 	public abstract VacationSummary getVacationSummary(String user);
 
-	public abstract VacationSummary fakeVacationSummary();
+	public abstract VacationSummary fakeVacationSummary(String user);
 	
 	public abstract void updateSummary(Vacation vacationRequest, VacationSummary vacationSummary, UpdateType updType);
 }

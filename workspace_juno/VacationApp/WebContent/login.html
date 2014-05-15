@@ -6,147 +6,56 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
         <title></title> 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-
+        
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/main.css">
-        <style>
-            body {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
+        <link rel="stylesheet" type="text/css" href="css/login_main.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/bigvideo.css">
 
-            table td {
-                margin: 0 !important;
-                padding: 0 !important;
-            }
 
-        </style>
+        <script type="text/javascript" src="js/vendor/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/vendor/jquery-ui-1.10.2.custom.min.js"></script>
+        <script type="text/javascript" src="js/vendor/ui/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/vendor/video.js"></script>
+        <script type="text/javascript" src="js/vendor/bigvideo.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+
     </head>
+
+
     <body>
-    
 
-
-
-
-<script>
-/*
-
-
-
-
-
-
-$(document).ready(function() {
-	console.log("ready");
-
-$('#btnSignIn').click(function() {
-
-
-	$.ajax({
-
-				type: "POST",
-                contentType: "application/text",
-                url: "j_security_check",
-                // This is the type what you are waiting back from the server
-                dataType: "text",
-                async: false,
-                crossDomain: false,
-                data: {
-                    j_username: "gbielanski",
-                    j_password: "12345"
-                },
-                success: function(data, textStatus, xhr) {
-                    alert('Thanks for your signin in! ' + xhr.status);
-                    window.location = "/VacationApp/index.html";
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(textStatus, errorThrown);
-                    window.location = "/SesamaMaven/index.html";
-                    alert(' Error in signIn-process!! ' + textStatus);
-                }
-
-
-            });
-	
-
-
-});
-
-});
-<form class="navbar-form pull-right">
-    <input class="span2" type="text" placeholder="Email" name="j_username" id="username">
-    <input class="span2" type="password" placeholder="Password" name="j_password" id="password">
-    <button type="button" class="btn" id="btnSignIn">Sign in</button>
-</form>
-*/
-
-</script>
-
-
-
- 
-    <h1></h1>  
-    <form method="POST" action="j_security_check" >  
-     <fieldset>
-        <div class="clearfix">
-            <input type="text" placeholder="Username" name="j_username">  
-        </div>
-        <div class="clearfix">
-            <input type="password" placeholder="Password" name="j_password">  
-       </div>
+       
+<div class="wrapper">        
+            <div id="header">
+                
+            <form method="POST" action="j_security_check" >  
+            <fieldset>
+            <div class="clearfix">
+                <input type="text" placeholder="Username" name="j_username">  
+            </div>
+            <div class="clearfix">
+                <input type="password" placeholder="Password" name="j_password">  
+            </div>
             <input class="btn primary" type="submit" value="login" name="j_security_check">  
+    </fieldset>
     </form>  
 
+    </div>  
+        </div>
+    </div>
 
 
-
-
-
-
-
-
-
-
-
-		
-    </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <script>
+        $(function() {
+            var BV = new $.BigVideo();
+            BV.init();
+            BV.show('css/Fotolia.mp4',{ambient:true});
+        });
+    </script>
+</body>

@@ -46,28 +46,73 @@ App.Models.Day = Backbone.Model.extend({
 	toggle: function(){
 		
 		var workingDay = !this.isWeekendOrHoliday();
+		console.log("toggle");
+
+
+
 
 		if(workingDay){
 			var status = this.get("status");
-			var vacationDays = this.get("parent").get("userVac").get("vacationDays");			
+			console.log(this);
+			var vacationDays = this.get("parent").get("userVac").get("vacationDays");
+
+
 	    	var dates = _.pluck(vacationDays, "dateStr");
 	    	var idx = _.indexOf(dates, this.get("dateStr"));
-	    	if (idx == -1 && (status == "" || status == CONST.statusMarked) || status == 4 ) {
-	    		var obj = {"dateStr": this.get("dateStr"), "status": this.get("status")};
-	    		vacationDays.push(obj);
+	    
+	    	console.log("status="+status+" idx="+idx);
 
-	    		console.log(obj.dateStr+" added");
+	    	//Cancellation from calendar view 
+	    	if (idx == -1)
+	    	{
+	    		if (status == CONST.statusAccepted)
+	    		{
+	    		console.log("Przygotowanie do anulowania");
+	    		var obj = {"dateStr": this.get("dateStr"), 
+	    				"status": this.get("status"), name: this.get("name")};
+	    			vacationDays.push(obj);
+				}
+				else if ((status == "") || (status == 4))
+				{
+					console.log("status = "+status);
+
+	    			if (App.freeDay.get("daysAvail") > 0 )
+	    			{
+	    			var obj = {"dateStr": this.get("dateStr"), 
+	    				"status": this.get("status"), name: this.get("name")};
+	    			vacationDays.push(obj);
+	    			App.freeDay.set("daysAvail", App.freeDay.get("daysAvail") - 1);
+	    			this.set("selected", !this.get("selected"));
+	    			}
+	    			else
+	    			{
+	    				alert("Wybierz odpowiedni typ urlopu");
+	    			}
+				}
+				else if (status == CONST.statusMarked &&  this.get("selected") )
+				{
+
+		    		App.freeDay.set("daysAvail", App.freeDay.get("daysAvail") + 1);
+		    		this.set("selected", !this.get("selected"));
+				}
 	    	}
+ 	    		
+	    	//deselect day
 	    	else{
 	    		console.log("selected="+this.get("selected"));
+
 	    		if (this.get("selected") && this.get("status")==CONST.statusMarked){
 	    			var obj = vacationDays[idx];
 		    		vacationDays.splice(idx,1);
+		    		App.freeDay.set("daysAvail", App.freeDay.get("daysAvail") + 1);
 		    		console.log(obj.dateStr+" removed");
+		    		this.set("selected", !this.get("selected"));
 	    		}
+	    		else
+	    			console.log("not handled");
 	    	}
 
-			this.set("selected", !this.get("selected"));
+			
 			var selected = this.get("selected");
 			
 			if (status == "" || status == CONST.statusMarked)
@@ -79,10 +124,13 @@ App.Models.Day = Backbone.Model.extend({
 					this.set("status", "");	
 				}	
 			}
+
 			
-			console.log("selected : "+ selected+" status : "+this.get("status"));
-			console.log(vacationDays);
+		//	console.log("selected : "+ selected+" status : "+this.get("status"));
+			//console.log(vacationDays);
+			
 		}
+		
 	},
 
 	resetStatus: function(){
@@ -90,6 +138,7 @@ App.Models.Day = Backbone.Model.extend({
 		if (this.isWeekendOrHoliday()){
 			this.set("status", 7);	
 		} 
+		console.log("day reset status");
 	},
 
 /*

@@ -26,7 +26,8 @@
 	    	<list>	 
 	    		<value>com.gtech.webservices.Vacation</value>
 	    		<value>com.gtech.webservices.VacationSummary</value>
-	    		<value>com.gtech.webservices.VAppUser</value>   	   	
+	    		<value>com.gtech.webservices.VAppUser</value>
+	    		<value>com.gtech.webservices.EscalationList</value>   	   	
 			</list>
 		</property>
 	    <property name="hibernateProperties">

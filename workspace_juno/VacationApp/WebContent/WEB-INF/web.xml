@@ -51,6 +51,7 @@
   <web-resource-collection>
     <web-resource-name>GrantAccess</web-resource-name>
     <url-pattern>/css/*</url-pattern>
+    <url-pattern>/js/vendor/*</url-pattern>
   </web-resource-collection>
 </security-constraint>
 

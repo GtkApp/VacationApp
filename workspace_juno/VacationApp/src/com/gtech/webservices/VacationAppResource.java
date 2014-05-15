@@ -33,14 +33,16 @@ public class VacationAppResource implements VacationAppInterface{
 	
 	@Autowired
 	private VacationManager vacationManager;
-	
+	/*
 	@Autowired
 	private EmailBroadcaster emailBROADCASTER;
+	*/
 	
 	@GET
 	@Path("/Bogus/{emailRecipients}/{mailContent}")
 	public void sendEmail(/*@PathParam("emailRecipients")*/ String emailRecipients, /*@PathParam("mailContent")*/ String mailContent)
 	{
+		/*
 		if(emailBROADCASTER != null)
 		{
 			System.out.println("EMAIL BROADCASTER IS WIRED IN !!!");
@@ -48,6 +50,7 @@ public class VacationAppResource implements VacationAppInterface{
 			String emailRecipients1 = "Boguslaw.Koseda@gtech.com";
 			emailBROADCASTER.sendEmail(new BroadcastedEmail("WarsawVacationRequests@gtech.com","Subj.",mailContent,emailRecipients.split(",")));
 		}
+		*/
 	}
 	
 	@Override
@@ -133,6 +136,19 @@ public class VacationAppResource implements VacationAppInterface{
 		return vUpdated;
 	}
 
+	@Override
+	@POST
+	@Path("/ExistingVacationByUser")
+	@Consumes({ "application/json", "application/xml" })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Vacation updateVacation(Vacation vacation, int userId) {
+		
+		//Vacation vUpdated = vacationDAO.updateVacationRequest(vacation, auth/*getUserFromAuth(auth)*/);
+		Vacation vUpdated = vacationManager.updateExistingVacation(vacation, userId);
+		return vUpdated;
+	}
+	
+	
 	@RolesAllowed({"admin"})
 	@GET() @Path("/DependentUserList")	
 	@Produces({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})

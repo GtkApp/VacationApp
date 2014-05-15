@@ -1,8 +1,6 @@
 $(function() {
 
-
-    
-
+   
 	//App.profile.save();
 	App.router = new App.Router();
 
@@ -10,6 +8,8 @@ $(function() {
 		alert( actions );
 	});*/
     Backbone.history.start();
+
+
 
 
 

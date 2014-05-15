@@ -41,6 +41,13 @@ public interface VacationAppInterface {
 	@Consumes({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
 	@Produces({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
 	public abstract Vacation updateVacation(Vacation vacation);
+
+	@RolesAllowed({"admin", "user"})
+	@POST() @Path("/ExistingVacationByUser")	
+	@Consumes({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
+	@Produces({ MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
+	public abstract Vacation updateVacation(Vacation vacation, @PathParam("userId") int userId);
+	
 	
 	@RolesAllowed({"admin"})
 	@GET() @Path("/VacationListByUser/{vacationSince}/{vacationUntil}/{userId}")

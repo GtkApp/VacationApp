@@ -5,12 +5,16 @@ App.Models.Calendar = Backbone.Model.extend({
         yearNumber: moment().year(),
         yearModel: "",
         userId:"1",
-        dateFormat: "YYYY-MM-DD"
+        vacTypeId:"0",
+        userName:"",
+        dateFormat: "YYYY-MM-DD",
 	},
 
 	initialize: function(){
 		var yearNumber = this.get("yearNumber");
+		console.log("initialize - build new year"); //remove
 		this.buildNewYear(yearNumber);
+		console.log("initialize");
 		this.fetchData();
 		
 /*//////// 
@@ -20,21 +24,32 @@ obiekcie jest użyty
  ////////////*/
 
 		this.on("change:userVac", function(model){
-			console.log("change:userVac");
-			this.get("yearModel").resetStatus();
+			//this.get("yearModel").resetStatus();
+
 			var userVac = this.get("userVac");		
+
 			var vacationDays = userVac.get("vacationDays");
-	
 		
+		//	currVac.set("vacationDays", vacationDays );
+			//console.log(userVac);
+			
 			this.updateDayStatus(vacationDays);
-			userVac.resetToDefaults();
+//			console.log(userVac);
+		//	this.save("currVac", currVac);
+			userVac.resetToDefaults(); //potrzebne?
+
+
+
 		});
 
 		this.on("change:yearNumber", function(model, yearNumber){
 			console.log("Changed yearNumber from " + this.previous("yearNumber") + " to " + yearNumber);
+		
 			this.buildNewYear(yearNumber);
 			this.fetchData();
 		});
+
+
 		
 		/*
 		this.on("change:userId", function(model, userId){
@@ -45,7 +60,8 @@ obiekcie jest użyty
 	},
 	
 	buildNewYear: function(yearNumber){
-		
+	
+
         var prevYear = moment().year(yearNumber).subtract('y',1).year();
         var nextYear = moment().year(yearNumber).add('y',1).year();
 		var yearModel = new App.Models.Year({yearNumber:yearNumber, parent:this});
@@ -65,7 +81,7 @@ obiekcie jest użyty
 			{
 			case "WAITING_FOR_ACCEPTATION":
 				return CONST.statusAcceptWait;	
-			case "ACCEPTED ":
+			case "ACCEPTED":
 				return CONST.statusAccepted;
 			case "WAITING_FOR_CANCELLATION":
 				return CONST.statusCancelWait;
@@ -74,8 +90,6 @@ obiekcie jest użyty
 			case "REJECTED":
 				return CONST.statusRejected;
 			}
-		
-
 	},
 
 
@@ -89,8 +103,8 @@ obiekcie jest użyty
 				var vacationDays = new App.Collections.Vacations();	
 				for (var i in response.vacations)
 				{			
-
 					data = new Date(response.vacations[i].vacationSince);
+					
 					for (var day = 0; day < response.vacations[i].numberOfDays; day++)
 					{
 							//do not mark weekend days as vacation
@@ -98,21 +112,17 @@ obiekcie jest użyty
 							{
 								data.addDays(1);
 							}
-						
 						var vacation = new App.Models.Vacation({
 						"dateStr": data.toString("yyyy-MM-dd"),				
 						"status": response.vacations[i].statusOfVacationRequest
-					});	
-					
+						});	
 						vacationDays.add(vacation);
-						data.addDays(1);
+						data.addDays(1); 
 					}
 				}
-		
-
 				userVac.set("vacationDays", vacationDays);
 				model.set("userVac", userVac);
-
+			//	console.log(model); 
 			},
 			error: function(model,xhr,options){
 				alert('error');
@@ -154,6 +164,7 @@ obiekcie jest użyty
 		    	var vacDay = vacDaysInMonth[model_idx];
  		        var day = dayCollection.at(vacDay.get("dayOfMonth") - 1);
 		        day.set("status", this.getStatus(vacDay.get("status")));
+
 		    }
 		    
 		}
@@ -162,11 +173,25 @@ obiekcie jest użyty
 	
 	groupVacDays: function(vacationDays){
 		
-		return _.groupBy(vacationDays.models, function(model){
+			return _.groupBy(vacationDays.models, function(model){
 			return model.get('month');	
 		});
-
 	},
+
+
+	setName: function(name)
+	{
+		this.set("userName", name);
+	},
+
+	getName: function()
+	{
+		console.log("pobieranie imie "+this.get("userName"));
+		return (this.get("userName"));
+	},
+
+
+
 	
 	//date in YYYY-MM-DD format is parsed to retrieve month and day of month
 	addDayAndMonthAttr: function(vacationDays){
@@ -183,8 +208,6 @@ obiekcie jest użyty
 					vacation.set("dayOfMonth", dayOfMonth);
 		};
 
-		
-	
 
 		return vacationDays;
 	},
@@ -198,7 +221,7 @@ obiekcie jest użyty
 	url : function() {
 	  	//console.log("data/userVac_"+this.get("userId")+"_"+this.get("yearNumber")+".json");
 	  //  return "data/userVac_"+this.get("userId")+"_"+this.get("yearNumber")+".json";
-	return "https://localhost:8443/VacationApp/Deeper/Rest/VacationList/"+this.get("yearNumber")+"-01-01/"+this.get("yearNumber")+"-12-31"
+	return "Deeper/Rest/VacationList/"+this.get("yearNumber")+"-01-01/"+this.get("yearNumber")+"-12-31"
 	},
 
 
